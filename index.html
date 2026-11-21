@@ -3,44 +3,47 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Matrix Inversion in Quantum Mechanics</title>
+  <title>QM Matrix Inversion &amp; Gateway SBaGen Lab</title>
   <style>
     :root {
-      --bg: #0b1020;
-      --surface: #121a33;
-      --surface-2: #192447;
+      --bg: #090d1a;
+      --surface: #121a30;
+      --surface-2: #192442;
       --text: #eef2ff;
-      --muted: #a5b4fc;
+      --muted: #9fb0e8;
       --accent: #38bdf8;
       --accent-2: #a78bfa;
       --ok: #34d399;
       --warn: #fbbf24;
       --no: #f87171;
-      --border: rgba(165, 180, 252, 0.18);
+      --border: rgba(159, 176, 232, 0.18);
       --radius: 14px;
-      --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      --sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
 
     * { box-sizing: border-box; }
 
     body {
       margin: 0;
-      font-family: var(--font-sans);
-      background: radial-gradient(circle at top right, #1b2852 0%, var(--bg) 55%);
+      font-family: var(--sans);
+      background: radial-gradient(circle at top right, #1b2852 0%, var(--bg) 60%);
       color: var(--text);
-      line-height: 1.6;
+      line-height: 1.55;
+      min-height: 100vh;
     }
 
-    header {
+    .app-shell {
       max-width: 1040px;
       margin: 0 auto;
-      padding: 2.5rem 1.25rem 1.25rem;
+      padding: 2rem 1.25rem 3.5rem;
+      display: grid;
+      gap: 1.25rem;
     }
 
     .badge {
       display: inline-block;
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       letter-spacing: 0.06em;
       text-transform: uppercase;
       color: var(--accent);
@@ -48,86 +51,85 @@
       border: 1px solid rgba(56, 189, 248, 0.3);
       padding: 0.25rem 0.65rem;
       border-radius: 999px;
-      margin-bottom: 0.75rem;
+      margin-bottom: 0.6rem;
     }
 
     h1 {
-      margin: 0 0 0.5rem;
-      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      margin: 0 0 0.35rem;
+      font-size: clamp(1.65rem, 3.8vw, 2.35rem);
       line-height: 1.2;
     }
 
     .subtitle {
       margin: 0;
       color: var(--muted);
-      max-width: 68ch;
+      max-width: 72ch;
     }
 
-    .controls {
-      max-width: 1040px;
-      margin: 0 auto;
-      padding: 0.75rem 1.25rem 1.5rem;
+    .top-tabs {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.5rem;
+      gap: 0.6rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.85rem;
     }
 
-    .filter-btn {
+    .top-tab {
       background: var(--surface);
       color: var(--text);
       border: 1px solid var(--border);
-      border-radius: 999px;
-      padding: 0.45rem 0.9rem;
-      font-size: 0.88rem;
+      border-radius: 10px;
+      padding: 0.6rem 1.05rem;
+      font-size: 0.94rem;
+      font-weight: 600;
       cursor: pointer;
       transition: all 0.15s ease;
     }
 
-    .filter-btn:hover {
+    .top-tab:hover {
       border-color: var(--accent);
     }
 
-    .filter-btn.active {
+    .top-tab.active {
       background: linear-gradient(135deg, var(--accent), var(--accent-2));
       color: #070b17;
-      font-weight: 600;
       border-color: transparent;
     }
 
-    main {
-      max-width: 1040px;
-      margin: 0 auto;
-      padding: 0 1.25rem 3.5rem;
-      display: grid;
-      gap: 1.5rem;
+    .view {
+      display: none;
+      gap: 1.25rem;
     }
 
-    section.card {
-      background: rgba(18, 26, 51, 0.88);
+    .view.active {
+      display: grid;
+    }
+
+    .card {
+      background: rgba(18, 26, 48, 0.9);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 1.5rem;
-      backdrop-filter: blur(8px);
+      padding: 1.35rem;
     }
 
-    section.hidden {
+    .card.hidden {
       display: none;
     }
 
     h2 {
-      margin: 0 0 1rem;
-      font-size: 1.3rem;
+      margin: 0 0 0.9rem;
+      font-size: 1.25rem;
       color: var(--accent);
     }
 
     h3 {
       margin: 0 0 0.45rem;
-      font-size: 1.02rem;
+      font-size: 1rem;
     }
 
     ul {
       margin: 0.35rem 0 0;
-      padding-left: 1.25rem;
+      padding-left: 1.2rem;
     }
 
     li + li {
@@ -149,12 +151,12 @@
 
     pre {
       margin: 0.5rem 0;
-      padding: 0.85rem 1rem;
+      padding: 0.8rem 0.95rem;
       background: #080d1a;
       border: 1px solid var(--border);
       border-radius: 8px;
-      font-family: var(--font-mono);
-      font-size: 0.88rem;
+      font-family: var(--mono);
+      font-size: 0.86rem;
       overflow-x: auto;
       color: #e2e8f0;
     }
@@ -167,7 +169,7 @@
 
     th, td {
       text-align: left;
-      padding: 0.7rem 0.75rem;
+      padding: 0.68rem 0.75rem;
       border-bottom: 1px solid var(--border);
     }
 
@@ -180,7 +182,29 @@
     .pill-warn { color: var(--warn); font-weight: 600; }
     .pill-no { color: var(--no); font-weight: 600; }
 
-    /* Interactive Checker */
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .filter-btn {
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 0.42rem 0.85rem;
+      font-size: 0.86rem;
+      cursor: pointer;
+    }
+
+    .filter-btn.active {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #070b17;
+      font-weight: 700;
+      border-color: transparent;
+    }
+
     .checker-box {
       display: grid;
       gap: 0.9rem;
@@ -198,314 +222,752 @@
       border: 1px solid var(--border);
     }
 
-    select, button.reset-btn {
-      background: var(--surface);
-      color: var(--text);
+    button, select {
+      font-family: var(--sans);
+      font-size: 0.92rem;
+      border-radius: 10px;
       border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 0.45rem 0.75rem;
-      font-size: 0.9rem;
+      background: var(--surface-2);
+      color: var(--text);
+      padding: 0.52rem 0.9rem;
       cursor: pointer;
     }
 
+    button.primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #070b17;
+      font-weight: 700;
+      border: none;
+    }
+
+    button.stop {
+      border-color: rgba(248, 113, 113, 0.45);
+      color: #fecaca;
+    }
+
     .result-banner {
-      padding: 1rem 1.15rem;
+      padding: 0.95rem 1.1rem;
       border-radius: 10px;
       background: #080d1a;
       border-left: 4px solid var(--accent);
-      font-weight: 500;
+    }
+
+    /* Audio Player Styles */
+    .transport {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      align-items: center;
+    }
+
+    .sliders {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    label.slider-box {
+      display: grid;
+      gap: 0.35rem;
+      font-size: 0.88rem;
+      color: var(--muted);
+      background: var(--surface-2);
+      padding: 0.75rem 0.9rem;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+
+    .slider-top {
+      display: flex;
+      justify-content: space-between;
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+
+    .status {
+      margin-top: 1rem;
+      background: #080d1a;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.9rem 1rem;
+      display: grid;
+      gap: 0.35rem;
+      font-family: var(--mono);
+      font-size: 0.86rem;
+    }
+
+    .step-list {
+      max-height: 300px;
+      overflow-y: auto;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #080d1a;
+    }
+
+    .step-item {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.75rem;
+      padding: 0.55rem 0.85rem;
+      border-bottom: 1px solid rgba(159, 176, 232, 0.08);
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    .step-item.active {
+      background: rgba(56, 189, 248, 0.14);
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .warn {
+      font-size: 0.86rem;
+      color: #fde68a;
+      background: rgba(251, 191, 36, 0.08);
+      border: 1px solid rgba(251, 191, 36, 0.25);
+      padding: 0.75rem 0.95rem;
+      border-radius: 10px;
     }
   </style>
 </head>
 <body>
-  <header>
-    <span class="badge">Quantum Mechanics Roadmap</span>
-    <h1>Matrix Inversion in Quantum Mechanics</h1>
-    <p class="subtitle">
-      Foundations, operator classes, worked 2×2 examples, resolvents, and physical intuition for when operators can—and cannot—be inverted.
-    </p>
-  </header>
+  <div class="app-shell">
+    <header>
+      <span class="badge">Single-File Application • gateway-sbagen-sequences</span>
+      <h1>QM Matrix Inversion &amp; Gateway SBaGen Lab</h1>
+      <p class="subtitle">
+        Combined standalone app featuring the Quantum Mechanics Matrix Inversion roadmap/checker and a real-time Web Audio binaural &amp; pink-noise synthesizer for the Gateway SBaGen sequences.
+      </p>
+    </header>
 
-  <nav class="controls" aria-label="Filter sections">
-    <button class="filter-btn active" data-filter="all">All Sections</button>
-    <button class="filter-btn" data-filter="foundations">1. Foundations</button>
-    <button class="filter-btn" data-filter="operators">2. Operator Classes</button>
-    <button class="filter-btn" data-filter="examples">3–4. Examples &amp; Resolvent</button>
-    <button class="filter-btn" data-filter="reference">5–6. Table &amp; Intuition</button>
-    <button class="filter-btn" data-filter="checker">Interactive Checker</button>
-  </nav>
+    <nav class="top-tabs" aria-label="Application sections">
+      <button class="top-tab active" data-view="qm-view" type="button">1. Matrix Inversion (QM)</button>
+      <button class="top-tab" data-view="audio-view" type="button">2. SBaGen Audio Player</button>
+    </nav>
 
-  <main>
-    <section class="card" data-group="foundations">
-      <h2>1. Foundations of Matrix Inversion</h2>
-      <ul>
-        <li><strong>Definition:</strong> For a square matrix <code>A</code>, the inverse <code>A⁻¹</code> satisfies <code>A · A⁻¹ = A⁻¹ · A = I</code>.</li>
-        <li><strong>Invertibility condition:</strong> Invertible if and only if <code>det(A) ≠ 0</code>.</li>
-        <li><strong>Relevance in quantum mechanics:</strong> Inversion represents "undoing" the action of an operator.</li>
-      </ul>
-    </section>
-
-    <section class="card" data-group="operators">
-      <h2>2. Operator Classes in Quantum Mechanics</h2>
-      <div class="grid-2">
-        <div class="subcard">
-          <h3>2.1 Unitary Operators</h3>
-          <ul>
-            <li><strong>Definition:</strong> <code>U† · U = U · U† = I</code></li>
-            <li><strong>Inverse:</strong> <code>U⁻¹ = U†</code></li>
-            <li><strong>Physical meaning:</strong> Reversible time evolution; conserves probability.</li>
-            <li><strong>Example:</strong> <code>U(t) = e^(-iHt/ħ)</code>, <code>U⁻¹(t) = e^(+iHt/ħ)</code></li>
-          </ul>
-        </div>
-        <div class="subcard">
-          <h3>2.2 Hermitian Operators</h3>
-          <ul>
-            <li><strong>Definition:</strong> <code>H† = H</code></li>
-            <li><strong>Invertibility:</strong> Invertible iff all eigenvalues <code>≠ 0</code>.</li>
-            <li><strong>Physical meaning:</strong> Observables (energy, momentum, spin).</li>
-            <li><strong>Examples:</strong> Pauli matrices (invertible); Hamiltonian with zero-energy eigenstates (not invertible).</li>
-          </ul>
-        </div>
-        <div class="subcard">
-          <h3>2.3 Projectors</h3>
-          <ul>
-            <li><strong>Definition:</strong> <code>P² = P</code>, <code>P† = P</code></li>
-            <li><strong>Eigenvalues:</strong> <code>0</code> or <code>1</code> → <span class="pill-no">Not invertible</span>.</li>
-            <li><strong>Physical meaning:</strong> Measurement → information loss.</li>
-          </ul>
-        </div>
-        <div class="subcard">
-          <h3>2.4 Density Matrices</h3>
-          <ul>
-            <li><strong>Definition:</strong> Hermitian, positive semidefinite, <code>Tr(ρ) = 1</code>.</li>
-            <li><strong>Mixed state (full rank):</strong> <span class="pill-yes">Invertible</span>.</li>
-            <li><strong>Pure state (rank-1):</strong> <span class="pill-no">Not invertible</span>.</li>
-          </ul>
-        </div>
+    <!-- VIEW 1: QUANTUM MECHANICS -->
+    <div id="qm-view" class="view active">
+      <div class="controls" aria-label="Filter QM sections">
+        <button class="filter-btn active" data-filter="all" type="button">All Sections</button>
+        <button class="filter-btn" data-filter="foundations" type="button">1. Foundations</button>
+        <button class="filter-btn" data-filter="operators" type="button">2. Operator Classes</button>
+        <button class="filter-btn" data-filter="examples" type="button">3–4. Examples &amp; Resolvent</button>
+        <button class="filter-btn" data-filter="reference" type="button">5–6. Table &amp; Intuition</button>
+        <button class="filter-btn" data-filter="checker" type="button">Interactive Checker</button>
       </div>
-    </section>
 
-    <section class="card" data-group="examples">
-      <h2>3–4. Special Cases, Examples &amp; Resolvent</h2>
-      <div class="grid-2">
-        <div class="subcard">
-          <h3>3.1 Pauli Matrices</h3>
-          <pre>σx = ⎡0  1⎤    σy = ⎡0 -i⎤    σz = ⎡1  0⎤
+      <section class="card qm-card" data-group="foundations">
+        <h2>1. Foundations of Matrix Inversion</h2>
+        <ul>
+          <li><strong>Definition:</strong> For a square matrix <code>A</code>, the inverse <code>A⁻¹</code> satisfies <code>A · A⁻¹ = A⁻¹ · A = I</code>.</li>
+          <li><strong>Invertibility condition:</strong> Invertible if and only if <code>det(A) ≠ 0</code>.</li>
+          <li><strong>Relevance in quantum mechanics:</strong> Inversion represents "undoing" the action of an operator.</li>
+        </ul>
+      </section>
+
+      <section class="card qm-card" data-group="operators">
+        <h2>2. Operator Classes in Quantum Mechanics</h2>
+        <div class="grid-2">
+          <div class="subcard">
+            <h3>2.1 Unitary Operators</h3>
+            <ul>
+              <li><strong>Definition:</strong> <code>U† · U = U · U† = I</code></li>
+              <li><strong>Inverse:</strong> <code>U⁻¹ = U†</code></li>
+              <li><strong>Physical meaning:</strong> Reversible time evolution; conserves probability.</li>
+              <li><strong>Example:</strong> <code>U(t) = e^(-iHt/ħ)</code>, <code>U⁻¹(t) = e^(+iHt/ħ)</code></li>
+            </ul>
+          </div>
+          <div class="subcard">
+            <h3>2.2 Hermitian Operators</h3>
+            <ul>
+              <li><strong>Definition:</strong> <code>H† = H</code></li>
+              <li><strong>Invertibility:</strong> Invertible iff all eigenvalues <code>≠ 0</code>.</li>
+              <li><strong>Physical meaning:</strong> Observables (energy, momentum, spin).</li>
+              <li><strong>Examples:</strong> Pauli matrices (invertible); Hamiltonian with zero-energy eigenstates (not invertible).</li>
+            </ul>
+          </div>
+          <div class="subcard">
+            <h3>2.3 Projectors</h3>
+            <ul>
+              <li><strong>Definition:</strong> <code>P² = P</code>, <code>P† = P</code></li>
+              <li><strong>Eigenvalues:</strong> <code>0</code> or <code>1</code> → <span class="pill-no">Not invertible</span>.</li>
+              <li><strong>Physical meaning:</strong> Measurement → information loss.</li>
+            </ul>
+          </div>
+          <div class="subcard">
+            <h3>2.4 Density Matrices</h3>
+            <ul>
+              <li><strong>Definition:</strong> Hermitian, positive semidefinite, <code>Tr(ρ) = 1</code>.</li>
+              <li><strong>Mixed state (full rank):</strong> <span class="pill-yes">Invertible</span>.</li>
+              <li><strong>Pure state (rank-1):</strong> <span class="pill-no">Not invertible</span>.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="card qm-card" data-group="examples">
+        <h2>3–4. Special Cases, Examples &amp; Resolvent</h2>
+        <div class="grid-2">
+          <div class="subcard">
+            <h3>3.1 Pauli Matrices</h3>
+            <pre>σx = ⎡0  1⎤    σy = ⎡0 -i⎤    σz = ⎡1  0⎤
      ⎣1  0⎦          ⎣i  0⎦          ⎣0 -1⎦</pre>
-          <p><code>det(σx) = -1</code>, <code>det(σy) = 1</code>, <code>det(σz) = -1</code>. Each is self-inverse: <code>σi⁻¹ = σi</code>.</p>
-        </div>
-        <div class="subcard">
-          <h3>3.2 Hadamard Gate</h3>
-          <pre>H = 1/√2 ⎡1  1⎤
+            <p><code>det(σx) = -1</code>, <code>det(σy) = 1</code>, <code>det(σz) = -1</code>. Each is self-inverse: <code>σi⁻¹ = σi</code>.</p>
+          </div>
+          <div class="subcard">
+            <h3>3.2 Hadamard Gate</h3>
+            <pre>H = 1/√2 ⎡1  1⎤
           ⎣1 -1⎦</pre>
-          <p><code>det(H) = -1</code>. Self-inverse: <code>H⁻¹ = H</code>.</p>
-        </div>
-        <div class="subcard">
-          <h3>3.3 Projector |0⟩⟨0| &amp; Pure Density Matrix</h3>
-          <pre>P = ρ_pure = ⎡1 0⎤
+            <p><code>det(H) = -1</code>. Self-inverse: <code>H⁻¹ = H</code>.</p>
+          </div>
+          <div class="subcard">
+            <h3>3.3 Projector |0⟩⟨0| &amp; Pure Density Matrix</h3>
+            <pre>P = ρ_pure = ⎡1 0⎤
              ⎣0 0⎦</pre>
-          <p><code>det = 0</code> → <span class="pill-no">Not invertible</span>.</p>
-        </div>
-        <div class="subcard">
-          <h3>3.4 Mixed-State Density Matrix</h3>
-          <pre>ρ_mixed = 1/2 ⎡1 0⎤
+            <p><code>det = 0</code> → <span class="pill-no">Not invertible</span>.</p>
+          </div>
+          <div class="subcard">
+            <h3>3.4 Mixed-State Density Matrix</h3>
+            <pre>ρ_mixed = 1/2 ⎡1 0⎤
                 ⎣0 1⎦</pre>
-          <p><code>det(ρ) = 1/4</code> → <span class="pill-yes">Invertible</span>, with <code>ρ⁻¹ = 2I</code>.</p>
+            <p><code>det(ρ) = 1/4</code> → <span class="pill-yes">Invertible</span>, with <code>ρ⁻¹ = 2I</code>.</p>
+          </div>
         </div>
-      </div>
-      <div class="subcard" style="margin-top: 1rem;">
-        <h3>4. Green’s Functions (Resolvent)</h3>
-        <p style="margin:0;">
-          <code>G(z) = (zI - H)⁻¹</code> — Invertible whenever <code>z</code> is not an eigenvalue of <code>H</code> (<code>z ∉ spectrum(H)</code>). Used heavily in perturbation theory and propagators.
-        </p>
-      </div>
-    </section>
+        <div class="subcard" style="margin-top: 1rem;">
+          <h3>4. Green’s Functions (Resolvent)</h3>
+          <p style="margin:0;">
+            <code>G(z) = (zI - H)⁻¹</code> — Invertible whenever <code>z</code> is not an eigenvalue of <code>H</code> (<code>z ∉ spectrum(H)</code>). Used heavily in perturbation theory and propagators.
+          </p>
+        </div>
+      </section>
 
-    <section class="card" data-group="reference">
-      <h2>5–6. Quick Reference &amp; Quantum Intuition</h2>
-      <div style="overflow-x:auto;">
-        <table>
-          <thead>
-            <tr>
-              <th>Operator Type</th>
-              <th>Invertible?</th>
-              <th>Note</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Unitary</td>
-              <td class="pill-yes">Always</td>
-              <td>Inverse = <code>U†</code></td>
-            </tr>
-            <tr>
-              <td>Hermitian</td>
-              <td class="pill-warn">Sometimes</td>
-              <td>Only if all eigenvalues <code>≠ 0</code></td>
-            </tr>
-            <tr>
-              <td>Projectors</td>
-              <td class="pill-no">Never</td>
-              <td>Measurement → information loss</td>
-            </tr>
-            <tr>
-              <td>Density matrices</td>
-              <td class="pill-warn">Sometimes</td>
-              <td>Mixed → yes, Pure → no</td>
-            </tr>
-            <tr>
-              <td>Pauli matrices</td>
-              <td class="pill-yes">Always</td>
-              <td>Self-inverse</td>
-            </tr>
-            <tr>
-              <td>Hadamard</td>
-              <td class="pill-yes">Always</td>
-              <td>Self-inverse</td>
-            </tr>
-            <tr>
-              <td>Resolvent <code>(zI - H)⁻¹</code></td>
-              <td class="pill-yes">If <code>z ∉ spectrum(H)</code></td>
-              <td>Used in perturbation &amp; propagators</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <ul style="margin-top:1rem;">
-        <li>Inversion = undoing an operation; time evolution requires unitarity.</li>
-        <li>Measurements collapse states, discarding information so they cannot be inverted.</li>
-      </ul>
-    </section>
+      <section class="card qm-card" data-group="reference">
+        <h2>5–6. Quick Reference &amp; Quantum Intuition</h2>
+        <div style="overflow-x:auto;">
+          <table>
+            <thead>
+              <tr>
+                <th>Operator Type</th>
+                <th>Invertible?</th>
+                <th>Note</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Unitary</td>
+                <td class="pill-yes">Always</td>
+                <td>Inverse = <code>U†</code></td>
+              </tr>
+              <tr>
+                <td>Hermitian</td>
+                <td class="pill-warn">Sometimes</td>
+                <td>Only if all eigenvalues <code>≠ 0</code></td>
+              </tr>
+              <tr>
+                <td>Projectors</td>
+                <td class="pill-no">Never</td>
+                <td>Measurement → information loss</td>
+              </tr>
+              <tr>
+                <td>Density matrices</td>
+                <td class="pill-warn">Sometimes</td>
+                <td>Mixed → yes, Pure → no</td>
+              </tr>
+              <tr>
+                <td>Pauli matrices</td>
+                <td class="pill-yes">Always</td>
+                <td>Self-inverse</td>
+              </tr>
+              <tr>
+                <td>Hadamard</td>
+                <td class="pill-yes">Always</td>
+                <td>Self-inverse</td>
+              </tr>
+              <tr>
+                <td>Resolvent <code>(zI - H)⁻¹</code></td>
+                <td class="pill-yes">If <code>z ∉ spectrum(H)</code></td>
+                <td>Used in perturbation &amp; propagators</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <ul style="margin-top:1rem;">
+          <li>Inversion = undoing an operation; time evolution requires unitarity.</li>
+          <li>Measurements collapse states, discarding information so they cannot be inverted.</li>
+        </ul>
+      </section>
 
-    <section class="card" data-group="checker">
-      <h2>Interactive Invertibility Decision Tree</h2>
-      <div class="checker-box">
-        <div class="question-row">
-          <label for="opType"><strong>1. What type of quantum operator/matrix is it?</strong></label>
-          <select id="opType">
-            <option value="unitary">Unitary (U)</option>
-            <option value="hermitian">Hermitian (H)</option>
-            <option value="projector">Projector (P)</option>
-            <option value="density">Density Matrix (ρ)</option>
-            <option value="resolvent">Resolvent (zI - H)</option>
-          </select>
+      <section class="card qm-card" data-group="checker">
+        <h2>Interactive Invertibility Decision Tree</h2>
+        <div class="checker-box">
+          <div class="question-row">
+            <label for="opType"><strong>1. What type of quantum operator/matrix is it?</strong></label>
+            <select id="opType">
+              <option value="unitary">Unitary (U)</option>
+              <option value="hermitian">Hermitian (H)</option>
+              <option value="projector">Projector (P)</option>
+              <option value="density">Density Matrix (ρ)</option>
+              <option value="resolvent">Resolvent (zI - H)</option>
+            </select>
+          </div>
+
+          <div class="question-row" id="subQuestionRow" style="display:none;">
+            <label id="subQuestionLabel" for="subChoice"></label>
+            <select id="subChoice"></select>
+          </div>
+
+          <div class="result-banner" id="checkerResult"></div>
+
+          <div>
+            <button id="resetChecker" type="button">Reset Selection</button>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- VIEW 2: SBAGEN AUDIO PLAYER -->
+    <div id="audio-view" class="view">
+      <div class="warn">
+        Use stereo headphones, keep volume low, and stop if you feel discomfort. Sequences are approximate binaural scripts and not official Monroe Institute recordings.
+      </div>
+
+      <section class="card">
+        <div class="transport">
+          <div class="btn-row">
+            <select id="presetSelect" aria-label="Choose sequence">
+              <option value="mini">gateway-mini.sbg (~30 min, 450s/step)</option>
+              <option value="cycle">gateway-cycle.sbg (~2 hr, 600s/step)</option>
+            </select>
+            <button id="playBtn" class="primary" type="button">Play</button>
+            <button id="pauseBtn" type="button" disabled>Pause</button>
+            <button id="stopBtn" class="stop" type="button" disabled>Stop</button>
+          </div>
+
+          <div class="btn-row">
+            <button id="prevBtn" type="button">Prev Step</button>
+            <button id="nextBtn" type="button">Next Step</button>
+            <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.88rem;color:var(--muted);">
+              <input id="timeScale" type="checkbox" />
+              <span>10× Speed (Test)</span>
+            </label>
+          </div>
         </div>
 
-        <div class="question-row" id="subQuestionRow" style="display:none;">
-          <label id="subQuestionLabel" for="subChoice"></label>
-          <select id="subChoice"></select>
+        <div class="sliders">
+          <label class="slider-box">
+            <span class="slider-top"><span>Master Volume</span><span id="masterVal">25%</span></span>
+            <input id="masterGain" type="range" min="0" max="1" step="0.01" value="0.25" />
+          </label>
+          <label class="slider-box">
+            <span class="slider-top"><span>Binaural Tones</span><span id="toneVal">60%</span></span>
+            <input id="toneGain" type="range" min="0" max="1" step="0.01" value="0.60" />
+          </label>
+          <label class="slider-box">
+            <span class="slider-top"><span>Pink Noise</span><span id="pinkVal">40%</span></span>
+            <input id="pinkGain" type="range" min="0" max="1" step="0.01" value="0.40" />
+          </label>
         </div>
 
-        <div class="result-banner" id="checkerResult"></div>
-
-        <div>
-          <button class="reset-btn" id="resetChecker" type="button">Reset Selection</button>
+        <div class="status" id="statusBox">
+          <div><strong>State:</strong> <span id="stateLabel">Stopped</span></div>
+          <div><strong>Focus / Stage:</strong> <span id="stageLabel">—</span></div>
+          <div><strong>Active Voices:</strong> <span id="voicesLabel">—</span></div>
+          <div><strong>Step Timer:</strong> <span id="timerLabel">00:00 / 00:00</span></div>
         </div>
-      </div>
-    </section>
-  </main>
+      </section>
+
+      <section class="card">
+        <h2>Sequence Steps</h2>
+        <div class="step-list" id="stepList"></div>
+      </section>
+    </div>
+  </div>
 
   <script>
-    // Section filtering
-    const filterButtons = document.querySelectorAll('.filter-btn');
-    const sections = document.querySelectorAll('main section.card');
+    const $ = (id) => document.getElementById(id);
 
-    filterButtons.forEach((btn) => {
-      btn.addEventListener('click', () => {
-        filterButtons.forEach((b) => b.classList.remove('active'));
-        btn.classList.add('active');
+    // Top-level app navigation
+    document.querySelectorAll(".top-tab").forEach((tab) => {
+      tab.addEventListener("click", () => {
+        document.querySelectorAll(".top-tab").forEach((t) => t.classList.remove("active"));
+        document.querySelectorAll(".view").forEach((v) => v.classList.remove("active"));
+        tab.classList.add("active");
+        $(tab.dataset.view).classList.add("active");
+      });
+    });
+
+    // QM section filter
+    document.querySelectorAll(".filter-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".filter-btn").forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
         const filter = btn.dataset.filter;
-
-        sections.forEach((sec) => {
-          sec.classList.toggle('hidden', filter !== 'all' && sec.dataset.group !== filter);
+        document.querySelectorAll(".qm-card").forEach((sec) => {
+          sec.classList.toggle("hidden", filter !== "all" && sec.dataset.group !== filter);
         });
       });
     });
 
-    // Interactive invertibility decision tree
-    const opType = document.getElementById('opType');
-    const subQuestionRow = document.getElementById('subQuestionRow');
-    const subQuestionLabel = document.getElementById('subQuestionLabel');
-    const subChoice = document.getElementById('subChoice');
-    const checkerResult = document.getElementById('checkerResult');
-    const resetChecker = document.getElementById('resetChecker');
+    // QM invertibility decision tree
+    const opType = $("opType");
+    const subQuestionRow = $("subQuestionRow");
+    const subQuestionLabel = $("subQuestionLabel");
+    const subChoice = $("subChoice");
+    const checkerResult = $("checkerResult");
+
+    function renderSubResult() {
+      const type = opType.value;
+      const val = subChoice.value;
+      if (type === "hermitian") {
+        if (val === "no") {
+          checkerResult.style.borderLeftColor = "var(--ok)";
+          checkerResult.innerHTML = "✅ <strong>Invertible:</strong> All eigenvalues are non-zero, so <code>H⁻¹</code> exists.";
+        } else {
+          checkerResult.style.borderLeftColor = "var(--no)";
+          checkerResult.innerHTML = "❌ <strong>Not Invertible:</strong> A zero eigenvalue implies <code>det(H) = 0</code>.";
+        }
+      } else if (type === "density") {
+        if (val === "full") {
+          checkerResult.style.borderLeftColor = "var(--ok)";
+          checkerResult.innerHTML = "✅ <strong>Invertible:</strong> Full-rank mixed states are invertible (e.g., for <code>ρ = ½I</code>, <code>ρ⁻¹ = 2I</code>).";
+        } else {
+          checkerResult.style.borderLeftColor = "var(--no)";
+          checkerResult.innerHTML = "❌ <strong>Not Invertible:</strong> Pure-state density matrices are rank-1 projectors (<code>det = 0</code>).";
+        }
+      } else if (type === "resolvent") {
+        if (val === "outside") {
+          checkerResult.style.borderLeftColor = "var(--ok)";
+          checkerResult.innerHTML = "✅ <strong>Invertible:</strong> <code>G(z) = (zI - H)⁻¹</code> is well-defined when <code>z</code> is not an eigenvalue of <code>H</code>.";
+        } else {
+          checkerResult.style.borderLeftColor = "var(--no)";
+          checkerResult.innerHTML = "❌ <strong>Not Invertible:</strong> If <code>z</code> is an eigenvalue of <code>H</code>, <code>zI - H</code> has a zero eigenvalue and is singular.";
+        }
+      }
+    }
 
     function updateChecker() {
       const type = opType.value;
-      subQuestionRow.style.display = 'none';
-      subChoice.innerHTML = '';
+      subQuestionRow.style.display = "none";
+      subChoice.innerHTML = "";
 
-      if (type === 'unitary') {
-        checkerResult.style.borderLeftColor = 'var(--ok)';
-        checkerResult.innerHTML = '✅ <strong>Always Invertible:</strong> <code>U⁻¹ = U†</code>. Preserves norms and allows reversible evolution.';
-      } else if (type === 'projector') {
-        checkerResult.style.borderLeftColor = 'var(--no)';
-        checkerResult.innerHTML = '❌ <strong>Not Invertible:</strong> Projectors have eigenvalues <code>0</code> or <code>1</code> (<code>det = 0</code>), reflecting irreversible projection/information loss.';
-      } else if (type === 'hermitian') {
-        subQuestionRow.style.display = 'flex';
-        subQuestionLabel.innerHTML = '<strong>2. Are there any zero eigenvalues?</strong>';
+      if (type === "unitary") {
+        checkerResult.style.borderLeftColor = "var(--ok)";
+        checkerResult.innerHTML = "✅ <strong>Always Invertible:</strong> <code>U⁻¹ = U†</code>. Preserves norms and allows reversible evolution.";
+      } else if (type === "projector") {
+        checkerResult.style.borderLeftColor = "var(--no)";
+        checkerResult.innerHTML = "❌ <strong>Not Invertible:</strong> Projectors have eigenvalues <code>0</code> or <code>1</code> (<code>det = 0</code>), reflecting irreversible projection/information loss.";
+      } else if (type === "hermitian") {
+        subQuestionRow.style.display = "flex";
+        subQuestionLabel.innerHTML = "<strong>2. Are there any zero eigenvalues?</strong>";
         subChoice.innerHTML = '<option value="no">No (all eigenvalues ≠ 0)</option><option value="yes">Yes (at least one zero eigenvalue)</option>';
-        const val = subChoice.value;
-        if (val === 'no') {
-          checkerResult.style.borderLeftColor = 'var(--ok)';
-          checkerResult.innerHTML = '✅ <strong>Invertible:</strong> All eigenvalues are non-zero, so <code>H⁻¹</code> exists.';
-        } else {
-          checkerResult.style.borderLeftColor = 'var(--no)';
-          checkerResult.innerHTML = '❌ <strong>Not Invertible:</strong> A zero eigenvalue implies <code>det(H) = 0</code>.';
-        }
-      } else if (type === 'density') {
-        subQuestionRow.style.display = 'flex';
-        subQuestionLabel.innerHTML = '<strong>2. Does the density matrix have full rank (mixed state)?</strong>';
+        renderSubResult();
+      } else if (type === "density") {
+        subQuestionRow.style.display = "flex";
+        subQuestionLabel.innerHTML = "<strong>2. Does the density matrix have full rank (mixed state)?</strong>";
         subChoice.innerHTML = '<option value="full">Yes — Full rank (mixed state)</option><option value="rank1">No — Rank-1 (pure state)</option>';
-        checkerResult.style.borderLeftColor = 'var(--ok)';
-        checkerResult.innerHTML = '✅ <strong>Invertible:</strong> Full-rank mixed states are invertible (e.g., for <code>ρ = ½I</code>, <code>ρ⁻¹ = 2I</code>).';
-      } else if (type === 'resolvent') {
-        subQuestionRow.style.display = 'flex';
-        subQuestionLabel.innerHTML = '<strong>2. Is z in the spectrum (eigenvalues) of H?</strong>';
+        renderSubResult();
+      } else if (type === "resolvent") {
+        subQuestionRow.style.display = "flex";
+        subQuestionLabel.innerHTML = "<strong>2. Is z in the spectrum (eigenvalues) of H?</strong>";
         subChoice.innerHTML = '<option value="outside">No — z ∉ spectrum(H)</option><option value="inside">Yes — z ∈ spectrum(H)</option>';
-        checkerResult.style.borderLeftColor = 'var(--ok)';
-        checkerResult.innerHTML = '✅ <strong>Invertible:</strong> <code>G(z) = (zI - H)⁻¹</code> is well-defined when <code>z</code> is not an eigenvalue of <code>H</code>.';
+        renderSubResult();
       }
     }
 
-    function evaluateSub() {
-      const type = opType.value;
-      const val = subChoice.value;
-      if (type === 'hermitian') {
-        if (val === 'no') {
-          checkerResult.style.borderLeftColor = 'var(--ok)';
-          checkerResult.innerHTML = '✅ <strong>Invertible:</strong> All eigenvalues are non-zero, so <code>H⁻¹</code> exists.';
-        } else {
-          checkerResult.style.borderLeftColor = 'var(--no)';
-          checkerResult.innerHTML = '❌ <strong>Not Invertible:</strong> A zero eigenvalue implies <code>det(H) = 0</code>.';
-        }
-      } else if (type === 'density') {
-        if (val === 'full') {
-          checkerResult.style.borderLeftColor = 'var(--ok)';
-          checkerResult.innerHTML = '✅ <strong>Invertible:</strong> Full-rank mixed states are invertible (e.g., for <code>ρ = ½I</code>, <code>ρ⁻¹ = 2I</code>).';
-        } else {
-          checkerResult.style.borderLeftColor = 'var(--no)';
-          checkerResult.innerHTML = '❌ <strong>Not Invertible:</strong> Pure-state density matrices are rank-1 projectors (<code>det = 0</code>).';
-        }
-      } else if (type === 'resolvent') {
-        if (val === 'outside') {
-          checkerResult.style.borderLeftColor = 'var(--ok)';
-          checkerResult.innerHTML = '✅ <strong>Invertible:</strong> <code>G(z) = (zI - H)⁻¹</code> is well-defined when <code>z</code> is not an eigenvalue of <code>H</code>.';
-        } else {
-          checkerResult.style.borderLeftColor = 'var(--no)';
-          checkerResult.innerHTML = '❌ <strong>Not Invertible:</strong> If <code>z</code> is an eigenvalue of <code>H</code>, <code>zI - H</code> has a zero eigenvalue and is singular.';
-        }
-      }
-    }
-
-    opType.addEventListener('change', updateChecker);
-    subChoice.addEventListener('change', evaluateSub);
-    resetChecker.addEventListener('click', () => {
-      opType.value = 'unitary';
+    opType.addEventListener("change", updateChecker);
+    subChoice.addEventListener("change", renderSubResult);
+    $("resetChecker").addEventListener("click", () => {
+      opType.value = "unitary";
       updateChecker();
     });
-
     updateChecker();
+
+    // SBaGen Web Audio Engine
+    const SEQUENCES = {
+      mini: [
+        { stage: "Focus 10: mind awake / body asleep", duration: 450, tones: [[100, 4.0], [300, 4.0], [500, 4.0]] },
+        { stage: "Focus 12: expanded awareness", duration: 450, tones: [[50, 0.6], [100, 0.64]] },
+        { stage: "Focus 15: no-time state", duration: 450, tones: [[150, 0.5], [300, 3.9], [500, 4.0]] },
+        { stage: "Focus 21: bridge to other realities", duration: 450, tones: [[200, 3.7], [288, 3.7], [400, 4.0]] }
+      ],
+      cycle: [
+        { stage: "Focus 10: mind awake / body asleep", duration: 600, tones: [[100, 4.0], [300, 4.0], [500, 4.0]] },
+        { stage: "Focus 12: expanded awareness", duration: 600, tones: [[50, 0.6], [100, 0.64]] },
+        { stage: "Focus 15: no-time state", duration: 600, tones: [[150, 0.5], [300, 3.9], [500, 4.0]] },
+        { stage: "Focus 21: bridge to other realities", duration: 600, tones: [[200, 3.7], [288, 3.7], [400, 4.0]] },
+        { stage: "Focus 22: contact state (approximate)", duration: 600, tones: [[250, 4.0], [350, 4.0], [450, 4.0]] },
+        { stage: "Focus 23: transitional level", duration: 600, tones: [[150, 3.8], [275, 4.0], [500, 4.0]] },
+        { stage: "Focus 24: beginning of belief-system territories", duration: 600, tones: [[50, 0.75], [400, 3.9], [503, 4.0], [600, 4.0], [750, 4.0], [900, 4.0]] },
+        { stage: "Focus 26: deeper territories", duration: 600, tones: [[400, 3.9], [503, 4.2], [600, 4.0], [750, 4.0], [900, 4.0]] },
+        { stage: "Focus 27: meeting place (park)", duration: 600, tones: [[150, 3.9], [250, 4.0], [350, 4.0], [450, 4.0]] }
+      ]
+    };
+
+    let ctx = null;
+    let masterNode = null;
+    let toneBus = null;
+    let pinkBus = null;
+    let pinkSource = null;
+    let voiceNodes = [];
+
+    let currentPreset = "mini";
+    let stepIndex = 0;
+    let elapsedInStep = 0;
+    let isPlaying = false;
+    let isPaused = false;
+    let lastTick = null;
+    let rafId = null;
+
+    function formatTime(sec) {
+      const s = Math.max(0, Math.floor(sec));
+      const m = Math.floor(s / 60);
+      const r = s % 60;
+      return `${String(m).padStart(2, "0")}:${String(r).padStart(2, "0")}`;
+    }
+
+    function createPinkNoiseBuffer(audioCtx) {
+      const len = audioCtx.sampleRate * 4;
+      const buf = audioCtx.createBuffer(2, len, audioCtx.sampleRate);
+      for (let ch = 0; ch < 2; ch++) {
+        const data = buf.getChannelData(ch);
+        let b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0;
+        for (let i = 0; i < len; i++) {
+          const white = Math.random() * 2 - 1;
+          b0 = 0.99886 * b0 + white * 0.0555179;
+          b1 = 0.99332 * b1 + white * 0.0750759;
+          b2 = 0.96900 * b2 + white * 0.1538520;
+          b3 = 0.86650 * b3 + white * 0.3104856;
+          b4 = 0.55000 * b4 + white * 0.5329522;
+          b5 = -0.7616 * b5 - white * 0.0168980;
+          data[i] = (b0 + b1 + b2 + b3 + b4 + b5 + b6 + white * 0.5362) * 0.04;
+          b6 = white * 0.115926;
+        }
+      }
+      return buf;
+    }
+
+    function ensureAudioContext() {
+      if (!ctx) {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        ctx = new AudioCtx();
+
+        masterNode = ctx.createGain();
+        masterNode.gain.value = Number($("masterGain").value);
+        masterNode.connect(ctx.destination);
+
+        toneBus = ctx.createGain();
+        toneBus.gain.value = Number($("toneGain").value);
+        toneBus.connect(masterNode);
+
+        pinkBus = ctx.createGain();
+        pinkBus.gain.value = Number($("pinkGain").value) * 0.45;
+        pinkBus.connect(masterNode);
+
+        pinkSource = ctx.createBufferSource();
+        pinkSource.buffer = createPinkNoiseBuffer(ctx);
+        pinkSource.loop = true;
+        pinkSource.connect(pinkBus);
+        pinkSource.start();
+      }
+      if (ctx.state === "suspended") {
+        ctx.resume();
+      }
+    }
+
+    function clearVoices() {
+      voiceNodes.forEach((n) => {
+        try { n.stop(); } catch (_) {}
+        try { n.disconnect(); } catch (_) {}
+      });
+      voiceNodes = [];
+    }
+
+    function applyStepVoices(step) {
+      clearVoices();
+      if (!ctx || !toneBus) return;
+
+      const perVoiceGain = Math.min(0.22, 0.45 / Math.max(1, step.tones.length));
+      const now = ctx.currentTime;
+
+      step.tones.forEach(([carrier, beat]) => {
+        const leftOsc = ctx.createOscillator();
+        const rightOsc = ctx.createOscillator();
+        const leftGain = ctx.createGain();
+        const rightGain = ctx.createGain();
+        const merger = ctx.createChannelMerger(2);
+
+        leftOsc.type = "sine";
+        rightOsc.type = "sine";
+        leftOsc.frequency.setValueAtTime(carrier, now);
+        rightOsc.frequency.setValueAtTime(carrier + beat, now);
+
+        leftGain.gain.setValueAtTime(0.0001, now);
+        rightGain.gain.setValueAtTime(0.0001, now);
+        leftGain.gain.exponentialRampToValueAtTime(perVoiceGain, now + 0.35);
+        rightGain.gain.exponentialRampToValueAtTime(perVoiceGain, now + 0.35);
+
+        leftOsc.connect(leftGain);
+        rightOsc.connect(rightGain);
+        leftGain.connect(merger, 0, 0);
+        rightGain.connect(merger, 0, 1);
+        merger.connect(toneBus);
+
+        leftOsc.start(now);
+        rightOsc.start(now);
+
+        voiceNodes.push(leftOsc, rightOsc);
+      });
+    }
+
+    function renderStepList() {
+      const steps = SEQUENCES[currentPreset];
+      $("stepList").innerHTML = steps.map((s, idx) => {
+        const toneText = s.tones.map(([c, b]) => `${c}+${b}`).join(", ");
+        return `<div class="step-item ${idx === stepIndex ? "active" : ""}">
+          <span>${idx + 1}. ${s.stage}</span>
+          <span>${toneText} (${s.duration}s)</span>
+        </div>`;
+      }).join("");
+    }
+
+    function updateUI() {
+      const steps = SEQUENCES[currentPreset];
+      const step = steps[stepIndex];
+      $("stateLabel").textContent = isPlaying ? (isPaused ? "Paused" : "Playing") : "Stopped";
+      $("stageLabel").textContent = step ? step.stage : "—";
+      $("voicesLabel").textContent = step ? step.tones.map(([c, b]) => `${c}Hz L / ${(c + b)}Hz R (+${b}Hz)`).join(" | ") : "—";
+      $("timerLabel").textContent = `${formatTime(elapsedInStep)} / ${formatTime(step ? step.duration : 0)}`;
+
+      $("playBtn").disabled = isPlaying && !isPaused;
+      $("pauseBtn").disabled = !isPlaying;
+      $("pauseBtn").textContent = isPaused ? "Resume" : "Pause";
+      $("stopBtn").disabled = !isPlaying && !isPaused && elapsedInStep === 0;
+
+      renderStepList();
+    }
+
+    function tick(now) {
+      if (!isPlaying) return;
+      if (lastTick !== null && !isPaused) {
+        const mult = $("timeScale").checked ? 10 : 1;
+        elapsedInStep += ((now - lastTick) / 1000) * mult;
+
+        const steps = SEQUENCES[currentPreset];
+        const step = steps[stepIndex];
+        if (elapsedInStep >= step.duration) {
+          elapsedInStep = 0;
+          if (stepIndex + 1 < steps.length) {
+            stepIndex += 1;
+            applyStepVoices(steps[stepIndex]);
+          } else {
+            stopPlayback();
+            return;
+          }
+        }
+        $("timerLabel").textContent = `${formatTime(elapsedInStep)} / ${formatTime(steps[stepIndex].duration)}`;
+      }
+      lastTick = now;
+      rafId = requestAnimationFrame(tick);
+    }
+
+    function startOrResume() {
+      ensureAudioContext();
+      const step = SEQUENCES[currentPreset][stepIndex];
+      if (!isPlaying) {
+        isPlaying = true;
+        isPaused = false;
+        applyStepVoices(step);
+        lastTick = performance.now();
+        rafId = requestAnimationFrame(tick);
+      } else if (isPaused) {
+        isPaused = false;
+        applyStepVoices(step);
+        lastTick = performance.now();
+        rafId = requestAnimationFrame(tick);
+      }
+      updateUI();
+    }
+
+    function pausePlayback() {
+      if (!isPlaying) return;
+      isPaused = !isPaused;
+      if (isPaused) {
+        clearVoices();
+      } else {
+        applyStepVoices(SEQUENCES[currentPreset][stepIndex]);
+        lastTick = performance.now();
+      }
+      updateUI();
+    }
+
+    function stopPlayback() {
+      isPlaying = false;
+      isPaused = false;
+      elapsedInStep = 0;
+      lastTick = null;
+      if (rafId) cancelAnimationFrame(rafId);
+      clearVoices();
+      updateUI();
+    }
+
+    function jumpStep(delta) {
+      const steps = SEQUENCES[currentPreset];
+      stepIndex = (stepIndex + delta + steps.length) % steps.length;
+      elapsedInStep = 0;
+      if (isPlaying && !isPaused) {
+        applyStepVoices(steps[stepIndex]);
+      }
+      updateUI();
+    }
+
+    $("playBtn").addEventListener("click", startOrResume);
+    $("pauseBtn").addEventListener("click", pausePlayback);
+    $("stopBtn").addEventListener("click", stopPlayback);
+    $("prevBtn").addEventListener("click", () => jumpStep(-1));
+    $("nextBtn").addEventListener("click", () => jumpStep(1));
+
+    $("presetSelect").addEventListener("change", (e) => {
+      stopPlayback();
+      currentPreset = e.target.value;
+      stepIndex = 0;
+      updateUI();
+    });
+
+    $("masterGain").addEventListener("input", (e) => {
+      const v = Number(e.target.value);
+      $("masterVal").textContent = `${Math.round(v * 100)}%`;
+      if (masterNode && ctx) masterNode.gain.setTargetAtTime(v, ctx.currentTime, 0.03);
+    });
+
+    $("toneGain").addEventListener("input", (e) => {
+      const v = Number(e.target.value);
+      $("toneVal").textContent = `${Math.round(v * 100)}%`;
+      if (toneBus && ctx) toneBus.gain.setTargetAtTime(v, ctx.currentTime, 0.03);
+    });
+
+    $("pinkGain").addEventListener("input", (e) => {
+      const v = Number(e.target.value);
+      $("pinkVal").textContent = `${Math.round(v * 100)}%`;
+      if (pinkBus && ctx) pinkBus.gain.setTargetAtTime(v * 0.45, ctx.currentTime, 0.03);
+    });
+
+    updateUI();
   </script>
 </body>
 </html>

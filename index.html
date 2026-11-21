@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="dark light">
   <title>QM Matrix Inversion &amp; Gateway SBaGen Lab</title>
   <style>
     :root {
@@ -17,12 +18,32 @@
       --warn: #fbbf24;
       --no: #f87171;
       --border: rgba(159, 176, 232, 0.18);
+      --deep: #080d1a; --glow: #1b2852; --card: rgba(18, 26, 48, 0.92);
+      --on-accent: #070b17; --stop-text: #fecaca; --warn-text: #fde68a;
       --radius: 14px;
       --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
       --sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
 
+    @media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) { color-scheme: light;
+        --bg:#f4f6ff;--glow:#dfe6ff;--surface:#fff;--surface-2:#eef1fb;--text:#12172b;--muted:#4b5a8a;
+        --accent:#0369a1;--accent-2:#6d28d9;--ok:#047857;--warn:#b45309;--no:#b91c1c;
+        --border:rgba(30,40,90,.2);--deep:#f8f9ff;--card:rgba(255,255,255,.92);
+        --on-accent:#fff;--stop-text:#b91c1c;--warn-text:#78350f; } }
+    :root[data-theme="light"] { color-scheme: light;
+        --bg:#f4f6ff;--glow:#dfe6ff;--surface:#fff;--surface-2:#eef1fb;--text:#12172b;--muted:#4b5a8a;
+        --accent:#0369a1;--accent-2:#6d28d9;--ok:#047857;--warn:#b45309;--no:#b91c1c;
+        --border:rgba(30,40,90,.2);--deep:#f8f9ff;--card:rgba(255,255,255,.92);
+        --on-accent:#fff;--stop-text:#b91c1c;--warn-text:#78350f; }
+    :root { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+    html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+
     * { box-sizing: border-box; }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .progress { height: 8px; border-radius: 999px; background: var(--deep); border: 1px solid var(--border); overflow: hidden; margin-top: 0.7rem; }
+    #progressFill { height: 100%; width: 0; background: linear-gradient(90deg, var(--accent), var(--accent-2)); transition: width 0.25s linear; }
+    .hint { margin: 0.7rem 0 0; font-size: 0.8rem; color: var(--muted); }
+    @media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
 
     html, body {
       margin: 0;
@@ -32,7 +53,7 @@
 
     body {
       font-family: var(--sans);
-      background: radial-gradient(circle at top right, #1b2852 0%, var(--bg) 60%);
+      background: radial-gradient(circle at top right, var(--glow) 0%, var(--bg) 60%);
       color: var(--text);
       line-height: 1.55;
       min-height: 100vh;
@@ -104,7 +125,7 @@
 
     .top-tab.active {
       background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      color: #070b17;
+      color: var(--on-accent);
       border-color: transparent;
     }
 
@@ -119,7 +140,7 @@
     }
 
     .card {
-      background: rgba(18, 26, 48, 0.92);
+      background: var(--card);
       border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 1.1rem;
@@ -173,7 +194,7 @@
     pre {
       margin: 0.5rem 0;
       padding: 0.7rem 0.8rem;
-      background: #080d1a;
+      background: var(--deep);
       border: 1px solid var(--border);
       border-radius: 8px;
       font-family: var(--mono);
@@ -181,7 +202,7 @@
       line-height: 1.45;
       overflow-x: auto;
       max-width: 100%;
-      color: #e2e8f0;
+      color: var(--text);
     }
 
     .table-wrap {
@@ -232,7 +253,7 @@
 
     .filter-btn.active {
       background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      color: #070b17;
+      color: var(--on-accent);
       font-weight: 700;
       border-color: transparent;
     }
@@ -276,20 +297,20 @@
 
     button.primary {
       background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      color: #070b17;
+      color: var(--on-accent);
       font-weight: 700;
       border: none;
     }
 
     button.stop {
       border-color: rgba(248, 113, 113, 0.45);
-      color: #fecaca;
+      color: var(--stop-text);
     }
 
     .result-banner {
       padding: 0.9rem 1rem;
       border-radius: 10px;
-      background: #080d1a;
+      background: var(--deep);
       border-left: 4px solid var(--accent);
       font-size: 0.94rem;
       overflow-wrap: anywhere;
@@ -360,7 +381,7 @@
 
     .status {
       margin-top: 0.95rem;
-      background: #080d1a;
+      background: var(--deep);
       border: 1px solid var(--border);
       border-radius: 10px;
       padding: 0.85rem 0.95rem;
@@ -377,7 +398,7 @@
       -webkit-overflow-scrolling: touch;
       border: 1px solid var(--border);
       border-radius: 10px;
-      background: #080d1a;
+      background: var(--deep);
     }
 
     .step-item {
@@ -404,7 +425,7 @@
 
     .warn {
       font-size: 0.85rem;
-      color: #fde68a;
+      color: var(--warn-text);
       background: rgba(251, 191, 36, 0.08);
       border: 1px solid rgba(251, 191, 36, 0.25);
       padding: 0.75rem 0.9rem;
@@ -463,35 +484,35 @@
 <body>
   <div class="app-shell">
     <header>
-      <span class="badge">Single-File Application • gateway-sbagen-sequences • Exact QM Math</span>
+      <span class="badge">Single-File Application • gateway-sbagen-sequences</span>
       <h1>QM Matrix Inversion &amp; Gateway SBaGen Lab</h1>
       <p class="subtitle">
-        Combined standalone app featuring the exact Quantum Mechanics Matrix Inversion formulation, checker, and a real-time Web Audio binaural &amp; pink-noise synthesizer for the Gateway SBaGen sequences.
+        Combined standalone app featuring the Quantum Mechanics Matrix Inversion roadmap/checker and a real-time Web Audio binaural &amp; pink-noise synthesizer for the Gateway SBaGen sequences.
       </p>
     </header>
 
     <nav class="top-tabs" aria-label="Application sections">
-      <button class="top-tab active" data-view="qm-view" type="button">1. Matrix Inversion (QM)</button>
-      <button class="top-tab" data-view="audio-view" type="button">2. SBaGen Audio Player</button>
+      <button class="top-tab active" aria-pressed="true" data-view="qm-view" type="button">1. Matrix Inversion (QM)</button>
+      <button class="top-tab" aria-pressed="false" data-view="audio-view" type="button">2. SBaGen Audio Player</button>
     </nav>
 
     <!-- VIEW 1: QUANTUM MECHANICS -->
     <div id="qm-view" class="view active">
       <nav class="controls" aria-label="Filter QM sections">
-        <button class="filter-btn active" data-filter="all" type="button">All Sections</button>
-        <button class="filter-btn" data-filter="foundations" type="button">1. Foundations</button>
-        <button class="filter-btn" data-filter="operators" type="button">2. Operator Classes</button>
-        <button class="filter-btn" data-filter="examples" type="button">3–4. Examples &amp; Resolvent</button>
-        <button class="filter-btn" data-filter="reference" type="button">5–6. Table &amp; Intuition</button>
-        <button class="filter-btn" data-filter="checker" type="button">Interactive Checker</button>
+        <button class="filter-btn active" aria-pressed="true" data-filter="all" type="button">All Sections</button>
+        <button class="filter-btn" aria-pressed="false" data-filter="foundations" type="button">1. Foundations</button>
+        <button class="filter-btn" aria-pressed="false" data-filter="operators" type="button">2. Operator Classes</button>
+        <button class="filter-btn" aria-pressed="false" data-filter="examples" type="button">3–4. Examples &amp; Resolvent</button>
+        <button class="filter-btn" aria-pressed="false" data-filter="reference" type="button">5–6. Table &amp; Intuition</button>
+        <button class="filter-btn" aria-pressed="false" data-filter="checker" type="button">Interactive Checker</button>
       </nav>
 
       <section class="card qm-card" data-group="foundations">
-        <h2>1. Exact Foundations of Matrix &amp; Operator Inversion</h2>
+        <h2>1. Foundations of Matrix Inversion</h2>
         <ul>
-          <li><strong>Two-Sided Inverse:</strong> For an <code>n × n</code> operator/matrix <code>A</code> on a Hilbert space <code>ℋ</code>, <code>A⁻¹</code> exists iff <code>A</code> is bijective, satisfying <code>A · A⁻¹ = A⁻¹ · A = I</code>.</li>
-          <li><strong>Exact Invertibility Equivalences (Finite Dim.):</strong> <code>A⁻¹</code> exists <code>⟺ det(A) ≠ 0 ⟺ rank(A) = n ⟺ 0 ∉ σ(A)</code> (where <code>σ(A)</code> is the spectrum/eigenvalue set of <code>A</code>).</li>
-          <li><strong>Adjoint Identities:</strong> With <code>⟨ψ, Aφ⟩ = ⟨A†ψ, φ⟩</code> (<code>A† = (Ā)ᵀ</code>), <code>(AB)† = B†A†</code>, <code>(αA)† = ᾱA†</code>, and <code>(A⁻¹)† = (A†)⁻¹</code> whenever <code>A⁻¹</code> exists.</li>
+          <li><strong>Definition:</strong> For a square matrix <code>A</code>, the inverse <code>A⁻¹</code> satisfies <code>A · A⁻¹ = A⁻¹ · A = I</code>.</li>
+          <li><strong>Invertibility condition:</strong> Invertible if and only if <code>det(A) ≠ 0</code>.</li>
+          <li><strong>Relevance in quantum mechanics:</strong> Inversion represents "undoing" the action of an operator.</li>
         </ul>
       </section>
 
@@ -501,130 +522,130 @@
           <div class="subcard">
             <h3>2.1 Unitary Operators</h3>
             <ul>
-              <li><strong>Definition:</strong> <code>U† · U = U · U† = I</code> (inner-product preserving &amp; surjective).</li>
-              <li><strong>Exact Inverse:</strong> <code>U⁻¹ = U†</code> always exists; eigenvalues satisfy <code>|λ| = 1</code> and <code>|det(U)| = 1</code>.</li>
-              <li><strong>Physical meaning:</strong> Reversible unitary evolution; conserves norm and probability.</li>
-              <li><strong>Example:</strong> <code>U(t) = exp(-iHt/ħ)</code>, <code>U⁻¹(t) = U†(t) = exp(+iHt/ħ)</code> (for Hermitian <code>H</code>).</li>
+              <li><strong>Definition:</strong> <code>U† · U = U · U† = I</code></li>
+              <li><strong>Inverse:</strong> <code>U⁻¹ = U†</code></li>
+              <li><strong>Physical meaning:</strong> Reversible time evolution; conserves probability.</li>
+              <li><strong>Example:</strong> <code>U(t) = e^(-iHt/ħ)</code>, <code>U⁻¹(t) = e^(+iHt/ħ)</code></li>
             </ul>
           </div>
           <div class="subcard">
-            <h3>2.2 Hermitian (Self-Adjoint) Operators</h3>
+            <h3>2.2 Hermitian Operators</h3>
             <ul>
-              <li><strong>Definition:</strong> <code>H† = H</code>; spectral decomposition <code>H = ∑_k λ_k |ψ_k⟩⟨ψ_k|</code> with <code>λ_k ∈ ℝ</code>.</li>
-              <li><strong>Exact Invertibility:</strong> Invertible iff <code>0 ∉ σ(H)</code> (all <code>λ_k ≠ 0</code>), giving <code>H⁻¹ = ∑_k (1/λ_k) |ψ_k⟩⟨ψ_k|</code> (also Hermitian).</li>
+              <li><strong>Definition:</strong> <code>H† = H</code></li>
+              <li><strong>Invertibility:</strong> Invertible iff all eigenvalues <code>≠ 0</code>.</li>
               <li><strong>Physical meaning:</strong> Observables (energy, momentum, spin).</li>
-              <li><strong>Singular Case:</strong> Any zero eigenvalue <code>λ_k = 0</code> gives <code>det(H) = 0</code> and non-trivial <code>ker(H)</code> → not invertible.</li>
+              <li><strong>Examples:</strong> Pauli matrices (invertible); Hamiltonian with zero-energy eigenstates (not invertible).</li>
             </ul>
           </div>
           <div class="subcard">
-            <h3>2.3 Orthogonal Projectors</h3>
+            <h3>2.3 Projectors</h3>
             <ul>
-              <li><strong>Definition:</strong> <code>P² = P</code> and <code>P† = P</code>.</li>
-              <li><strong>Eigenvalues &amp; Invertibility:</strong> <code>λ ∈ {0, 1}</code> → <span class="pill-no">Not invertible</span> for any nontrivial projector (<code>P ≠ I</code> on full space, <code>det(P) = 0</code>).</li>
-              <li><strong>Physical meaning:</strong> Ideal projective measurement/subspace restriction; irreversible information loss on <code>ker(P)</code>.</li>
+              <li><strong>Definition:</strong> <code>P² = P</code>, <code>P† = P</code></li>
+              <li><strong>Eigenvalues:</strong> <code>0</code> or <code>1</code> → <span class="pill-no">Not invertible</span>.</li>
+              <li><strong>Physical meaning:</strong> Measurement → information loss.</li>
             </ul>
           </div>
           <div class="subcard">
-            <h3>2.4 Density Matrices / Operators</h3>
+            <h3>2.4 Density Matrices</h3>
             <ul>
-              <li><strong>Definition:</strong> <code>ρ† = ρ</code>, <code>ρ ≥ 0</code> (positive semidefinite, all eigenvalues <code>p_j ≥ 0</code>), and <code>Tr(ρ) = 1</code>.</li>
-              <li><strong>Full-Rank Mixed State (<code>p_j &gt; 0</code> ∀j):</strong> <span class="pill-yes">Invertible</span> with <code>ρ⁻¹ = ∑_j (1/p_j) |φ_j⟩⟨φ_j|</code>.</li>
-              <li><strong>Rank-1 Pure State or Any Zero Eigenvalue:</strong> <span class="pill-no">Not invertible</span> (<code>det(ρ) = 0</code>; <code>Tr(ρ²) = 1</code> for pure states).</li>
+              <li><strong>Definition:</strong> Hermitian, positive semidefinite, <code>Tr(ρ) = 1</code>.</li>
+              <li><strong>Mixed state (full rank):</strong> <span class="pill-yes">Invertible</span>.</li>
+              <li><strong>Pure state (rank-1):</strong> <span class="pill-no">Not invertible</span>.</li>
             </ul>
           </div>
         </div>
       </section>
 
       <section class="card qm-card" data-group="examples">
-        <h2>3–4. Exact Matrix Calculations &amp; Resolvent</h2>
+        <h2>3–4. Special Cases, Examples &amp; Resolvent</h2>
         <div class="grid-2">
           <div class="subcard">
-            <h3>3.1 Pauli Matrices (Involutions)</h3>
-            <pre>σx = [0  1; 1  0]   → det(σx) = -1
-σy = [0 -i; i  0]   → det(σy) = -(-i²) = -1
-σz = [1  0; 0 -1]   → det(σz) = -1</pre>
-            <p>Each satisfies <code>σ_i² = I</code> and <code>σ_i† = σ_i</code>, so <code>σ_i⁻¹ = σ_i</code> for <code>i ∈ {x, y, z}</code>.</p>
+            <h3>3.1 Pauli Matrices</h3>
+            <pre>σx = [0  1; 1  0]
+σy = [0 -i; i  0]
+σz = [1  0; 0 -1]</pre>
+            <p><code>det(σx) = -1</code>, <code>det(σy) = 1</code>, <code>det(σz) = -1</code>. Each is self-inverse: <code>σi⁻¹ = σi</code>.</p>
           </div>
           <div class="subcard">
             <h3>3.2 Hadamard Gate</h3>
-            <pre>H_had = (1/√2) [ 1  1 ]
-               [ 1 -1 ]</pre>
-            <p><code>det(H_had) = (1/2)(-1 - 1) = -1 ≠ 0</code>. Unitary and Hermitian with <code>H_had² = I</code>, so <code>H_had⁻¹ = H_had</code>.</p>
+            <pre>H = (1/√2) [ 1  1 ]
+           [ 1 -1 ]</pre>
+            <p><code>det(H) = -1</code>. Self-inverse: <code>H⁻¹ = H</code>.</p>
           </div>
           <div class="subcard">
-            <h3>3.3 Pure Qubit State |0⟩⟨0|</h3>
-            <pre>ρ_pure = |0⟩⟨0| = [ 1  0 ]
-                 [ 0  0 ]</pre>
-            <p><code>det(ρ_pure) = 0</code> (eigenvalues <code>1, 0</code>; rank 1) → <span class="pill-no">Not invertible</span>.</p>
+            <h3>3.3 Projector |0⟩⟨0| &amp; Pure Density Matrix</h3>
+            <pre>P = ρ_pure = [ 1  0 ]
+             [ 0  0 ]</pre>
+            <p><code>det = 0</code> → <span class="pill-no">Not invertible</span>.</p>
           </div>
           <div class="subcard">
-            <h3>3.4 Maximally Mixed Qubit State</h3>
-            <pre>ρ_mixed = (1/2) I₂ = [ 1/2   0  ]
-                     [  0   1/2 ]</pre>
-            <p><code>det(ρ_mixed) = (1/2)(1/2) = 1/4 ≠ 0</code> → <span class="pill-yes">Invertible</span>, with exact inverse <code>ρ_mixed⁻¹ = 2I₂</code>.</p>
+            <h3>3.4 Mixed-State Density Matrix</h3>
+            <pre>ρ_mixed = (1/2) [ 1  0 ]
+                [ 0  1 ]</pre>
+            <p><code>det(ρ) = 1/4</code> → <span class="pill-yes">Invertible</span>, with <code>ρ⁻¹ = 2I</code>.</p>
           </div>
         </div>
         <div class="subcard" style="margin-top: 0.85rem;">
-          <h3>4. Green’s Function / Resolvent Operator</h3>
+          <h3>4. Green’s Functions (Resolvent)</h3>
           <p style="margin:0;">
-            <code>R_H(z) = G(z) = (zI - H)⁻¹</code> — Invertible on <code>ℂ \ σ(H)</code> whenever <code>z ∉ σ(H)</code> (for Hermitian <code>H = ∑_n E_n |n⟩⟨n|</code> and <code>z ∉ {E_n}</code>, <code>(zI - H)⁻¹ = ∑_n |n⟩⟨n| / (z - E_n)</code>). Singular whenever <code>z ∈ σ(H)</code> (<code>det(zI - H) = 0</code>).
+            <code>G(z) = (zI - H)⁻¹</code> — Invertible whenever <code>z</code> is not an eigenvalue of <code>H</code> (<code>z ∉ spectrum(H)</code>). Used heavily in perturbation theory and propagators.
           </p>
         </div>
       </section>
 
       <section class="card qm-card" data-group="reference">
-        <h2>5–6. Exact Quick Reference &amp; Quantum Intuition</h2>
+        <h2>5–6. Quick Reference &amp; Quantum Intuition</h2>
         <div class="table-wrap">
           <table>
             <thead>
               <tr>
-                <th>Operator / Matrix</th>
+                <th>Operator Type</th>
                 <th>Invertible?</th>
-                <th>Exact Condition &amp; Inverse</th>
+                <th>Note</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td>General <code>n × n</code> matrix <code>A</code></td>
-                <td class="pill-warn">Iff <code>det(A) ≠ 0</code></td>
-                <td>Equivalent to <code>rank(A) = n</code> and <code>0 ∉ σ(A)</code></td>
-              </tr>
-              <tr>
-                <td>Unitary <code>U</code></td>
+                <td>Unitary</td>
                 <td class="pill-yes">Always</td>
-                <td>Exact inverse: <code>U⁻¹ = U†</code>; <code>|λ| = 1</code></td>
+                <td>Inverse = <code>U†</code></td>
               </tr>
               <tr>
-                <td>Hermitian <code>H</code></td>
-                <td class="pill-warn">Iff <code>0 ∉ σ(H)</code></td>
-                <td><code>H⁻¹ = ∑_k λ_k⁻¹ |ψ_k⟩⟨ψ_k|</code> when all <code>λ_k ≠ 0</code></td>
+                <td>Hermitian</td>
+                <td class="pill-warn">Sometimes</td>
+                <td>Only if all eigenvalues <code>≠ 0</code></td>
               </tr>
               <tr>
-                <td>Orthogonal projector <code>P</code></td>
-                <td class="pill-no">No (unless <code>P = I</code>)</td>
-                <td>Eigenvalues in <code>{0, 1}</code>; <code>det(P) = 0</code> if <code>ker(P) ≠ {0}</code></td>
+                <td>Projectors</td>
+                <td class="pill-no">Never</td>
+                <td>Measurement → information loss</td>
               </tr>
               <tr>
-                <td>Density matrix <code>ρ</code> (<code>n × n</code>)</td>
-                <td class="pill-warn">Iff <code>ρ &gt; 0</code> (full rank)</td>
-                <td>All eigenvalues <code>p_j &gt; 0</code>; pure/rank-deficient <code>ρ</code> has <code>det(ρ) = 0</code></td>
+                <td>Density matrices</td>
+                <td class="pill-warn">Sometimes</td>
+                <td>Mixed → yes, Pure → no</td>
               </tr>
               <tr>
-                <td>Pauli matrices &amp; Hadamard</td>
+                <td>Pauli matrices</td>
                 <td class="pill-yes">Always</td>
-                <td>Involutions (<code>A² = I</code>) with <code>det = -1</code>; <code>A⁻¹ = A</code></td>
+                <td>Self-inverse</td>
+              </tr>
+              <tr>
+                <td>Hadamard</td>
+                <td class="pill-yes">Always</td>
+                <td>Self-inverse</td>
               </tr>
               <tr>
                 <td>Resolvent <code>(zI - H)⁻¹</code></td>
-                <td class="pill-yes">Iff <code>z ∉ σ(H)</code></td>
-                <td>Undefined/singular at eigenvalues <code>z ∈ σ(H)</code></td>
+                <td class="pill-yes">If <code>z ∉ spectrum(H)</code></td>
+                <td>Used in perturbation &amp; propagators</td>
               </tr>
             </tbody>
           </table>
         </div>
         <ul style="margin-top:1rem;">
-          <li>Inversion corresponds to exact operator reversal (<code>A⁻¹A = I</code>); unitary operators are always invertible with <code>U⁻¹ = U†</code>.</li>
-          <li>Non-invertibility (<code>det = 0</code>, zero eigenvalue) means a non-trivial nullspace <code>ker(A) ≠ {0}</code>, where distinct inputs collapse to the same output and cannot be uniquely inverted.</li>
+          <li>Inversion = undoing an operation; time evolution requires unitarity.</li>
+          <li>Measurements collapse states, discarding information so they cannot be inverted.</li>
         </ul>
       </section>
 
@@ -647,7 +668,7 @@
             <select id="subChoice"></select>
           </div>
 
-          <div class="result-banner" id="checkerResult"></div>
+          <div class="result-banner" id="checkerResult" role="status" aria-live="polite"></div>
 
           <div>
             <button id="resetChecker" type="button">Reset Selection</button>
@@ -702,10 +723,13 @@
 
         <div class="status" id="statusBox">
           <div><strong>State:</strong> <span id="stateLabel">Stopped</span></div>
-          <div><strong>Focus / Stage:</strong> <span id="stageLabel">—</span></div>
+          <div><strong>Focus / Stage:</strong> <span id="stageLabel" aria-live="polite">—</span></div>
           <div><strong>Active Voices:</strong> <span id="voicesLabel">—</span></div>
           <div><strong>Step Timer:</strong> <span id="timerLabel">00:00 / 00:00</span></div>
+          <div><strong>Overall:</strong> <span id="overallLabel">00:00 / 00:00</span></div>
         </div>
+        <div class="progress" aria-hidden="true"><div id="progressFill"></div></div>
+        <p class="hint">Tip: press Space to play or pause while this tab is open.</p>
       </section>
 
       <section class="card">
@@ -720,17 +744,19 @@
 
     document.querySelectorAll(".top-tab").forEach((tab) => {
       tab.addEventListener("click", () => {
-        document.querySelectorAll(".top-tab").forEach((t) => t.classList.remove("active"));
+        document.querySelectorAll(".top-tab").forEach((t) => { t.classList.remove("active"); t.setAttribute("aria-pressed", "false"); });
         document.querySelectorAll(".view").forEach((v) => v.classList.remove("active"));
         tab.classList.add("active");
+        tab.setAttribute("aria-pressed", "true");
         $(tab.dataset.view).classList.add("active");
       });
     });
 
     document.querySelectorAll(".filter-btn").forEach((btn) => {
       btn.addEventListener("click", () => {
-        document.querySelectorAll(".filter-btn").forEach((b) => b.classList.remove("active"));
+        document.querySelectorAll(".filter-btn").forEach((b) => { b.classList.remove("active"); b.setAttribute("aria-pressed", "false"); });
         btn.classList.add("active");
+        btn.setAttribute("aria-pressed", "true");
         const filter = btn.dataset.filter;
         document.querySelectorAll(".qm-card").forEach((sec) => {
           sec.classList.toggle("hidden", filter !== "all" && sec.dataset.group !== filter);
@@ -750,26 +776,26 @@
       if (type === "hermitian") {
         if (val === "no") {
           checkerResult.style.borderLeftColor = "var(--ok)";
-          checkerResult.innerHTML = "✅ <strong>Invertible (0 ∉ σ(H)):</strong> All eigenvalues are non-zero, so <code>H⁻¹ = ∑_k λ_k⁻¹ |ψ_k⟩⟨ψ_k|</code> exists and is Hermitian.";
+          checkerResult.innerHTML = "✅ <strong>Invertible:</strong> All eigenvalues are non-zero, so <code>H⁻¹</code> exists.";
         } else {
           checkerResult.style.borderLeftColor = "var(--no)";
-          checkerResult.innerHTML = "❌ <strong>Not Invertible (0 ∈ σ(H)):</strong> A zero eigenvalue implies <code>det(H) = 0</code> and <code>ker(H) ≠ {0}</code>.";
+          checkerResult.innerHTML = "❌ <strong>Not Invertible:</strong> A zero eigenvalue implies <code>det(H) = 0</code>.";
         }
       } else if (type === "density") {
         if (val === "full") {
           checkerResult.style.borderLeftColor = "var(--ok)";
-          checkerResult.innerHTML = "✅ <strong>Invertible (ρ &gt; 0):</strong> Full-rank positive-definite density matrices (all eigenvalues <code>p_j &gt; 0</code>) have <code>ρ⁻¹ = ∑_j p_j⁻¹ |φ_j⟩⟨φ_j|</code> (e.g., for <code>ρ = ½I₂</code>, <code>ρ⁻¹ = 2I₂</code>).";
+          checkerResult.innerHTML = "✅ <strong>Invertible:</strong> Full-rank mixed states are invertible (e.g., for <code>ρ = ½I</code>, <code>ρ⁻¹ = 2I</code>).";
         } else {
           checkerResult.style.borderLeftColor = "var(--no)";
-          checkerResult.innerHTML = "❌ <strong>Not Invertible (det(ρ) = 0):</strong> Pure states (rank-1) or any state with a zero eigenvalue have <code>det(ρ) = 0</code> and are singular.";
+          checkerResult.innerHTML = "❌ <strong>Not Invertible:</strong> Pure-state density matrices are rank-1 projectors (<code>det = 0</code>).";
         }
       } else if (type === "resolvent") {
         if (val === "outside") {
           checkerResult.style.borderLeftColor = "var(--ok)";
-          checkerResult.innerHTML = "✅ <strong>Invertible (z ∉ σ(H)):</strong> <code>R_H(z) = (zI - H)⁻¹</code> is well-defined when <code>z</code> is not in the spectrum of <code>H</code>.";
+          checkerResult.innerHTML = "✅ <strong>Invertible:</strong> <code>G(z) = (zI - H)⁻¹</code> is well-defined when <code>z</code> is not an eigenvalue of <code>H</code>.";
         } else {
           checkerResult.style.borderLeftColor = "var(--no)";
-          checkerResult.innerHTML = "❌ <strong>Not Invertible (z ∈ σ(H)):</strong> When <code>z</code> is an eigenvalue of <code>H</code>, <code>0 ∈ σ(zI - H)</code> and <code>det(zI - H) = 0</code>.";
+          checkerResult.innerHTML = "❌ <strong>Not Invertible:</strong> If <code>z</code> is an eigenvalue of <code>H</code>, <code>zI - H</code> has a zero eigenvalue and is singular.";
         }
       }
     }
@@ -781,24 +807,24 @@
 
       if (type === "unitary") {
         checkerResult.style.borderLeftColor = "var(--ok)";
-        checkerResult.innerHTML = "✅ <strong>Always Invertible:</strong> <code>U⁻¹ = U†</code> since <code>U†U = UU† = I</code>. Preserves inner products and norms.";
+        checkerResult.innerHTML = "✅ <strong>Always Invertible:</strong> <code>U⁻¹ = U†</code>. Preserves norms and allows reversible evolution.";
       } else if (type === "projector") {
         checkerResult.style.borderLeftColor = "var(--no)";
-        checkerResult.innerHTML = "❌ <strong>Not Invertible (for P ≠ I):</strong> Orthogonal projectors satisfy <code>P² = P</code> with eigenvalues in <code>{0, 1}</code>; any zero eigenvalue gives <code>det(P) = 0</code>.";
+        checkerResult.innerHTML = "❌ <strong>Not Invertible:</strong> Projectors have eigenvalues <code>0</code> or <code>1</code> (<code>det = 0</code>), reflecting irreversible projection/information loss.";
       } else if (type === "hermitian") {
         subQuestionRow.style.display = "grid";
-        subQuestionLabel.innerHTML = "<strong>2. Does H have any zero eigenvalues (0 ∈ σ(H))?</strong>";
-        subChoice.innerHTML = '<option value="no">No — 0 ∉ σ(H) (all eigenvalues ≠ 0)</option><option value="yes">Yes — 0 ∈ σ(H) (at least one zero eigenvalue)</option>';
+        subQuestionLabel.innerHTML = "<strong>2. Are there any zero eigenvalues?</strong>";
+        subChoice.innerHTML = '<option value="no">No (all eigenvalues ≠ 0)</option><option value="yes">Yes (at least one zero eigenvalue)</option>';
         renderSubResult();
       } else if (type === "density") {
         subQuestionRow.style.display = "grid";
-        subQuestionLabel.innerHTML = "<strong>2. Is ρ strictly positive definite (full rank, all eigenvalues p_j &gt; 0)?</strong>";
-        subChoice.innerHTML = '<option value="full">Yes — Full rank, all p_j &gt; 0 (ρ &gt; 0)</option><option value="rank1">No — Pure state (rank-1) or has a zero eigenvalue</option>';
+        subQuestionLabel.innerHTML = "<strong>2. Does the density matrix have full rank (mixed state)?</strong>";
+        subChoice.innerHTML = '<option value="full">Yes — Full rank (mixed state)</option><option value="rank1">No — Rank-1 (pure state)</option>';
         renderSubResult();
       } else if (type === "resolvent") {
         subQuestionRow.style.display = "grid";
-        subQuestionLabel.innerHTML = "<strong>2. Is z in the spectrum σ(H) of H?</strong>";
-        subChoice.innerHTML = '<option value="outside">No — z ∉ σ(H)</option><option value="inside">Yes — z ∈ σ(H)</option>';
+        subQuestionLabel.innerHTML = "<strong>2. Is z in the spectrum (eigenvalues) of H?</strong>";
+        subChoice.innerHTML = '<option value="outside">No — z ∉ spectrum(H)</option><option value="inside">Yes — z ∈ spectrum(H)</option>';
         renderSubResult();
       }
     }
@@ -930,10 +956,8 @@
             rightGain.disconnect();
             merger.disconnect();
           } else {
-            leftGain.gain.cancelScheduledValues(now);
-            rightGain.gain.cancelScheduledValues(now);
-            leftGain.gain.setValueAtTime(Math.max(0.0001, leftGain.gain.value), now);
-            rightGain.gain.setValueAtTime(Math.max(0.0001, rightGain.gain.value), now);
+            holdGain(leftGain.gain, now);
+            holdGain(rightGain.gain, now);
             leftGain.gain.exponentialRampToValueAtTime(0.0001, now + FADE_SEC);
             rightGain.gain.exponentialRampToValueAtTime(0.0001, now + FADE_SEC);
             leftOsc.stop(now + FADE_SEC + 0.01);
@@ -1014,6 +1038,24 @@
       $("stopBtn").disabled = !isPlaying && !isPaused && elapsedInStep === 0;
 
       renderStepList();
+      updateProgress();
+    }
+
+    function updateProgress() {
+      const steps = SEQUENCES[currentPreset];
+      const total = steps.reduce((a, s) => a + s.duration, 0);
+      const done = steps.slice(0, stepIndex).reduce((a, s) => a + s.duration, 0) + elapsedInStep;
+      $("progressFill").style.width = `${Math.min(100, (done / total) * 100)}%`;
+      $("overallLabel").textContent = `${formatTime(done)} / ${formatTime(total)}`;
+    }
+
+    function holdGain(param, now) {
+      if (param.cancelAndHoldAtTime) {
+        param.cancelAndHoldAtTime(now);
+      } else {
+        param.cancelScheduledValues(now);
+        param.setValueAtTime(Math.max(0.0001, param.value), now);
+      }
     }
 
     function tick(now) {
@@ -1038,6 +1080,7 @@
               stepIndex += 1;
               stepChanged = true;
             } else {
+              stepIndex = 0;
               stopPlayback();
               return;
             }
@@ -1049,6 +1092,7 @@
           updateUI();
         } else {
           $("timerLabel").textContent = `${formatTime(elapsedInStep)} / ${formatTime(steps[stepIndex].duration)}`;
+          updateProgress();
         }
       }
       lastTick = now;
@@ -1152,8 +1196,14 @@
       if (pinkBus && ctx) pinkBus.gain.setTargetAtTime(v * PINK_HEADROOM, ctx.currentTime, 0.025);
     });
 
+    document.addEventListener("keydown", (e) => {
+      if (e.code !== "Space" || !$("audio-view").classList.contains("active")) return;
+      if (e.target.closest && e.target.closest("button, select, input, textarea, a")) return;
+      e.preventDefault();
+      if (!isPlaying) startOrResume(); else pausePlayback();
+    });
+
     updateUI();
   </script>
 </body>
 </html>
-```[cite: 1]

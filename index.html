@@ -831,12 +831,15 @@
       ]
     };
 
+    const PINK_HEADROOM = 0.25;
+    const FADE_SEC = 0.06;
+
     let ctx = null;
     let masterNode = null;
     let toneBus = null;
     let pinkBus = null;
     let pinkSource = null;
-    let voiceNodes = [];
+    let activeVoiceGroups = [];
 
     let currentPreset = "mini";
     let stepIndex = 0;
@@ -845,6 +848,7 @@
     let isPaused = false;
     let lastTick = null;
     let rafId = null;
+    let transportOpId = 0;
 
     function formatTime(sec) {
       const s = Math.max(0, Math.floor(sec));
@@ -874,7 +878,7 @@
       return buf;
     }
 
-    function ensureAudioContext() {
+    async function ensureAudioContext() {
       if (!ctx) {
         const AudioCtx = window.AudioContext || window.webkitAudioContext;
         ctx = new AudioCtx();
@@ -888,7 +892,7 @@
         toneBus.connect(masterNode);
 
         pinkBus = ctx.createGain();
-        pinkBus.gain.value = Number($("pinkGain").value) * 0.45;
+        pinkBus.gain.value = Number($("pinkGain").value) * PINK_HEADROOM;
         pinkBus.connect(masterNode);
 
         pinkSource = ctx.createBufferSource();
@@ -898,21 +902,59 @@
         pinkSource.start();
       }
       if (ctx.state === "suspended") {
-        ctx.resume();
+        await ctx.resume();
       }
     }
 
-    function clearVoices() {
-      voiceNodes.forEach((n) => {
-        try { n.stop(); } catch (_) {}
-        try { n.disconnect(); } catch (_) {}
+    function clearVoices(immediate = false) {
+      if (!ctx || activeVoiceGroups.length === 0) {
+        activeVoiceGroups = [];
+        return;
+      }
+      const now = ctx.currentTime;
+      const groups = activeVoiceGroups;
+      activeVoiceGroups = [];
+
+      groups.forEach(({ leftOsc, rightOsc, leftGain, rightGain, merger }) => {
+        try {
+          if (immediate) {
+            leftGain.gain.cancelScheduledValues(now);
+            rightGain.gain.cancelScheduledValues(now);
+            leftGain.gain.setValueAtTime(0.0001, now);
+            rightGain.gain.setValueAtTime(0.0001, now);
+            leftOsc.stop(now);
+            rightOsc.stop(now);
+            leftOsc.disconnect();
+            rightOsc.disconnect();
+            leftGain.disconnect();
+            rightGain.disconnect();
+            merger.disconnect();
+          } else {
+            leftGain.gain.cancelScheduledValues(now);
+            rightGain.gain.cancelScheduledValues(now);
+            leftGain.gain.setValueAtTime(Math.max(0.0001, leftGain.gain.value), now);
+            rightGain.gain.setValueAtTime(Math.max(0.0001, rightGain.gain.value), now);
+            leftGain.gain.exponentialRampToValueAtTime(0.0001, now + FADE_SEC);
+            rightGain.gain.exponentialRampToValueAtTime(0.0001, now + FADE_SEC);
+            leftOsc.stop(now + FADE_SEC + 0.01);
+            rightOsc.stop(now + FADE_SEC + 0.01);
+            setTimeout(() => {
+              try {
+                leftOsc.disconnect();
+                rightOsc.disconnect();
+                leftGain.disconnect();
+                rightGain.disconnect();
+                merger.disconnect();
+              } catch (_) {}
+            }, Math.ceil((FADE_SEC + 0.03) * 1000));
+          }
+        } catch (_) {}
       });
-      voiceNodes = [];
     }
 
     function applyStepVoices(step) {
-      clearVoices();
-      if (!ctx || !toneBus) return;
+      clearVoices(false);
+      if (!ctx || !toneBus || !step) return;
 
       const perVoiceGain = Math.min(0.22, 0.45 / Math.max(1, step.tones.length));
       const now = ctx.currentTime;
@@ -931,8 +973,8 @@
 
         leftGain.gain.setValueAtTime(0.0001, now);
         rightGain.gain.setValueAtTime(0.0001, now);
-        leftGain.gain.exponentialRampToValueAtTime(perVoiceGain, now + 0.35);
-        rightGain.gain.exponentialRampToValueAtTime(perVoiceGain, now + 0.35);
+        leftGain.gain.exponentialRampToValueAtTime(perVoiceGain, now + FADE_SEC);
+        rightGain.gain.exponentialRampToValueAtTime(perVoiceGain, now + FADE_SEC);
 
         leftOsc.connect(leftGain);
         rightOsc.connect(rightGain);
@@ -943,7 +985,7 @@
         leftOsc.start(now);
         rightOsc.start(now);
 
-        voiceNodes.push(leftOsc, rightOsc);
+        activeVoiceGroups.push({ leftOsc, rightOsc, leftGain, rightGain, merger });
       });
     }
 
@@ -978,63 +1020,93 @@
       if (!isPlaying) return;
       if (lastTick !== null && !isPaused) {
         const mult = $("timeScale").checked ? 10 : 1;
-        elapsedInStep += ((now - lastTick) / 1000) * mult;
-
+        let delta = ((now - lastTick) / 1000) * mult;
         const steps = SEQUENCES[currentPreset];
-        const step = steps[stepIndex];
-        if (elapsedInStep >= step.duration) {
-          elapsedInStep = 0;
-          if (stepIndex + 1 < steps.length) {
-            stepIndex += 1;
-            applyStepVoices(steps[stepIndex]);
+        let stepChanged = false;
+
+        while (isPlaying && delta > 0) {
+          const currentStep = steps[stepIndex];
+          const remaining = currentStep.duration - elapsedInStep;
+
+          if (delta < remaining) {
+            elapsedInStep += delta;
+            delta = 0;
           } else {
-            stopPlayback();
-            return;
+            delta -= remaining;
+            elapsedInStep = 0;
+            if (stepIndex + 1 < steps.length) {
+              stepIndex += 1;
+              stepChanged = true;
+            } else {
+              stopPlayback();
+              return;
+            }
           }
         }
-        $("timerLabel").textContent = `${formatTime(elapsedInStep)} / ${formatTime(steps[stepIndex].duration)}`;
+
+        if (stepChanged) {
+          applyStepVoices(steps[stepIndex]);
+          updateUI();
+        } else {
+          $("timerLabel").textContent = `${formatTime(elapsedInStep)} / ${formatTime(steps[stepIndex].duration)}`;
+        }
       }
       lastTick = now;
       rafId = requestAnimationFrame(tick);
     }
 
-    function startOrResume() {
-      ensureAudioContext();
+    async function startOrResume() {
+      const opId = ++transportOpId;
+      await ensureAudioContext();
+      if (opId !== transportOpId) return;
+
       const step = SEQUENCES[currentPreset][stepIndex];
       if (!isPlaying) {
         isPlaying = true;
         isPaused = false;
         applyStepVoices(step);
         lastTick = performance.now();
+        if (rafId) cancelAnimationFrame(rafId);
         rafId = requestAnimationFrame(tick);
       } else if (isPaused) {
         isPaused = false;
         applyStepVoices(step);
         lastTick = performance.now();
+        if (rafId) cancelAnimationFrame(rafId);
         rafId = requestAnimationFrame(tick);
       }
       updateUI();
     }
 
-    function pausePlayback() {
+    async function pausePlayback() {
       if (!isPlaying) return;
-      isPaused = !isPaused;
-      if (isPaused) {
-        clearVoices();
+      const opId = ++transportOpId;
+      if (!isPaused) {
+        isPaused = true;
+        lastTick = null;
+        clearVoices(false);
+        updateUI();
       } else {
+        await ensureAudioContext();
+        if (opId !== transportOpId || !isPlaying) return;
+        isPaused = false;
         applyStepVoices(SEQUENCES[currentPreset][stepIndex]);
         lastTick = performance.now();
+        updateUI();
       }
-      updateUI();
     }
 
     function stopPlayback() {
+      transportOpId += 1;
       isPlaying = false;
       isPaused = false;
       elapsedInStep = 0;
       lastTick = null;
-      if (rafId) cancelAnimationFrame(rafId);
-      clearVoices();
+      if (rafId) {
+        cancelAnimationFrame(rafId);
+        rafId = null;
+      }
+      clearVoices(true);
       updateUI();
     }
 
@@ -1042,14 +1114,15 @@
       const steps = SEQUENCES[currentPreset];
       stepIndex = (stepIndex + delta + steps.length) % steps.length;
       elapsedInStep = 0;
+      lastTick = performance.now();
       if (isPlaying && !isPaused) {
         applyStepVoices(steps[stepIndex]);
       }
       updateUI();
     }
 
-    $("playBtn").addEventListener("click", startOrResume);
-    $("pauseBtn").addEventListener("click", pausePlayback);
+    $("playBtn").addEventListener("click", () => { startOrResume(); });
+    $("pauseBtn").addEventListener("click", () => { pausePlayback(); });
     $("stopBtn").addEventListener("click", stopPlayback);
     $("prevBtn").addEventListener("click", () => jumpStep(-1));
     $("nextBtn").addEventListener("click", () => jumpStep(1));
@@ -1064,19 +1137,19 @@
     $("masterGain").addEventListener("input", (e) => {
       const v = Number(e.target.value);
       $("masterVal").textContent = `${Math.round(v * 100)}%`;
-      if (masterNode && ctx) masterNode.gain.setTargetAtTime(v, ctx.currentTime, 0.03);
+      if (masterNode && ctx) masterNode.gain.setTargetAtTime(v, ctx.currentTime, 0.025);
     });
 
     $("toneGain").addEventListener("input", (e) => {
       const v = Number(e.target.value);
       $("toneVal").textContent = `${Math.round(v * 100)}%`;
-      if (toneBus && ctx) toneBus.gain.setTargetAtTime(v, ctx.currentTime, 0.03);
+      if (toneBus && ctx) toneBus.gain.setTargetAtTime(v, ctx.currentTime, 0.025);
     });
 
     $("pinkGain").addEventListener("input", (e) => {
       const v = Number(e.target.value);
       $("pinkVal").textContent = `${Math.round(v * 100)}%`;
-      if (pinkBus && ctx) pinkBus.gain.setTargetAtTime(v * 0.45, ctx.currentTime, 0.03);
+      if (pinkBus && ctx) pinkBus.gain.setTargetAtTime(v * PINK_HEADROOM, ctx.currentTime, 0.025);
     });
 
     updateUI();

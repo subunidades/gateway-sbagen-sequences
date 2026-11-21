@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>QM Matrix Inversion &amp; Gateway SBaGen Lab</title>
   <style>
     :root {
@@ -252,7 +252,6 @@
       border-left: 4px solid var(--accent);
     }
 
-    /* Audio Player Styles */
     .transport {
       display: flex;
       flex-wrap: wrap;
@@ -363,14 +362,14 @@
 
     <!-- VIEW 1: QUANTUM MECHANICS -->
     <div id="qm-view" class="view active">
-      <div class="controls" aria-label="Filter QM sections">
+      <nav class="controls" aria-label="Filter QM sections">
         <button class="filter-btn active" data-filter="all" type="button">All Sections</button>
         <button class="filter-btn" data-filter="foundations" type="button">1. Foundations</button>
         <button class="filter-btn" data-filter="operators" type="button">2. Operator Classes</button>
         <button class="filter-btn" data-filter="examples" type="button">3–4. Examples &amp; Resolvent</button>
         <button class="filter-btn" data-filter="reference" type="button">5–6. Table &amp; Intuition</button>
         <button class="filter-btn" data-filter="checker" type="button">Interactive Checker</button>
-      </div>
+      </nav>
 
       <section class="card qm-card" data-group="foundations">
         <h2>1. Foundations of Matrix Inversion</h2>
@@ -548,6 +547,7 @@
       </div>
 
       <section class="card">
+        <h2>Transport &amp; Mixer</h2>
         <div class="transport">
           <div class="btn-row">
             <select id="presetSelect" aria-label="Choose sequence">
@@ -563,7 +563,7 @@
             <button id="prevBtn" type="button">Prev Step</button>
             <button id="nextBtn" type="button">Next Step</button>
             <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.88rem;color:var(--muted);">
-              <input id="timeScale" type="checkbox" />
+              <input id="timeScale" type="checkbox">
               <span>10× Speed (Test)</span>
             </label>
           </div>
@@ -572,15 +572,15 @@
         <div class="sliders">
           <label class="slider-box">
             <span class="slider-top"><span>Master Volume</span><span id="masterVal">25%</span></span>
-            <input id="masterGain" type="range" min="0" max="1" step="0.01" value="0.25" />
+            <input id="masterGain" type="range" min="0" max="1" step="0.01" value="0.25">
           </label>
           <label class="slider-box">
             <span class="slider-top"><span>Binaural Tones</span><span id="toneVal">60%</span></span>
-            <input id="toneGain" type="range" min="0" max="1" step="0.01" value="0.60" />
+            <input id="toneGain" type="range" min="0" max="1" step="0.01" value="0.60">
           </label>
           <label class="slider-box">
             <span class="slider-top"><span>Pink Noise</span><span id="pinkVal">40%</span></span>
-            <input id="pinkGain" type="range" min="0" max="1" step="0.01" value="0.40" />
+            <input id="pinkGain" type="range" min="0" max="1" step="0.01" value="0.40">
           </label>
         </div>
 
@@ -602,7 +602,6 @@
   <script>
     const $ = (id) => document.getElementById(id);
 
-    // Top-level app navigation
     document.querySelectorAll(".top-tab").forEach((tab) => {
       tab.addEventListener("click", () => {
         document.querySelectorAll(".top-tab").forEach((t) => t.classList.remove("active"));
@@ -612,7 +611,6 @@
       });
     });
 
-    // QM section filter
     document.querySelectorAll(".filter-btn").forEach((btn) => {
       btn.addEventListener("click", () => {
         document.querySelectorAll(".filter-btn").forEach((b) => b.classList.remove("active"));
@@ -624,7 +622,6 @@
       });
     });
 
-    // QM invertibility decision tree
     const opType = $("opType");
     const subQuestionRow = $("subQuestionRow");
     const subQuestionLabel = $("subQuestionLabel");
@@ -698,7 +695,6 @@
     });
     updateChecker();
 
-    // SBaGen Web Audio Engine
     const SEQUENCES = {
       mini: [
         { stage: "Focus 10: mind awake / body asleep", duration: 450, tones: [[100, 4.0], [300, 4.0], [500, 4.0]] },

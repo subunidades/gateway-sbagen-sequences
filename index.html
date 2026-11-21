@@ -24,52 +24,62 @@
 
     * { box-sizing: border-box; }
 
-    body {
+    html, body {
       margin: 0;
+      padding: 0;
+      overflow-x: clip;
+    }
+
+    body {
       font-family: var(--sans);
       background: radial-gradient(circle at top right, #1b2852 0%, var(--bg) 60%);
       color: var(--text);
       line-height: 1.55;
       min-height: 100vh;
+      -webkit-text-size-adjust: 100%;
     }
 
     .app-shell {
       max-width: 1040px;
       margin: 0 auto;
-      padding: 2rem 1.25rem 3.5rem;
+      padding: 1.25rem 0.95rem 3rem;
       display: grid;
-      gap: 1.25rem;
+      gap: 1.1rem;
+      min-width: 0;
     }
 
     .badge {
       display: inline-block;
-      font-size: 0.76rem;
-      letter-spacing: 0.06em;
+      font-size: 0.72rem;
+      letter-spacing: 0.05em;
       text-transform: uppercase;
       color: var(--accent);
       background: rgba(56, 189, 248, 0.12);
       border: 1px solid rgba(56, 189, 248, 0.3);
       padding: 0.25rem 0.65rem;
       border-radius: 999px;
-      margin-bottom: 0.6rem;
+      margin-bottom: 0.55rem;
+      max-width: 100%;
     }
 
     h1 {
       margin: 0 0 0.35rem;
-      font-size: clamp(1.65rem, 3.8vw, 2.35rem);
+      font-size: clamp(1.45rem, 5.5vw, 2.35rem);
       line-height: 1.2;
+      overflow-wrap: anywhere;
     }
 
     .subtitle {
       margin: 0;
       color: var(--muted);
+      font-size: 0.95rem;
       max-width: 72ch;
     }
 
     .top-tabs {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.6rem;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.55rem;
       border-bottom: 1px solid var(--border);
       padding-bottom: 0.85rem;
     }
@@ -79,11 +89,13 @@
       color: var(--text);
       border: 1px solid var(--border);
       border-radius: 10px;
-      padding: 0.6rem 1.05rem;
-      font-size: 0.94rem;
+      padding: 0.68rem 0.85rem;
+      min-height: 44px;
+      font-size: 0.9rem;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.15s ease;
+      text-align: center;
     }
 
     .top-tab:hover {
@@ -98,7 +110,8 @@
 
     .view {
       display: none;
-      gap: 1.25rem;
+      gap: 1.1rem;
+      min-width: 0;
     }
 
     .view.active {
@@ -106,10 +119,11 @@
     }
 
     .card {
-      background: rgba(18, 26, 48, 0.9);
+      background: rgba(18, 26, 48, 0.92);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 1.35rem;
+      padding: 1.1rem;
+      min-width: 0;
     }
 
     .card.hidden {
@@ -117,60 +131,77 @@
     }
 
     h2 {
-      margin: 0 0 0.9rem;
-      font-size: 1.25rem;
+      margin: 0 0 0.8rem;
+      font-size: 1.18rem;
       color: var(--accent);
+      line-height: 1.3;
     }
 
     h3 {
       margin: 0 0 0.45rem;
       font-size: 1rem;
+      line-height: 1.35;
     }
 
     ul {
       margin: 0.35rem 0 0;
-      padding-left: 1.2rem;
+      padding-left: 1.15rem;
     }
 
     li + li {
-      margin-top: 0.3rem;
+      margin-top: 0.35rem;
+    }
+
+    code {
+      overflow-wrap: anywhere;
     }
 
     .grid-2 {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
-      gap: 1rem;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+      gap: 0.85rem;
     }
 
     .subcard {
       background: var(--surface-2);
       border: 1px solid var(--border);
       border-radius: 10px;
-      padding: 1rem;
+      padding: 0.9rem;
+      min-width: 0;
     }
 
     pre {
       margin: 0.5rem 0;
-      padding: 0.8rem 0.95rem;
+      padding: 0.7rem 0.8rem;
       background: #080d1a;
       border: 1px solid var(--border);
       border-radius: 8px;
       font-family: var(--mono);
-      font-size: 0.86rem;
+      font-size: clamp(0.72rem, 2.7vw, 0.84rem);
+      line-height: 1.45;
       overflow-x: auto;
+      max-width: 100%;
       color: #e2e8f0;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      border-radius: 10px;
     }
 
     table {
       width: 100%;
+      min-width: 440px;
       border-collapse: collapse;
-      font-size: 0.92rem;
+      font-size: 0.88rem;
     }
 
     th, td {
       text-align: left;
-      padding: 0.68rem 0.75rem;
+      padding: 0.62rem 0.65rem;
       border-bottom: 1px solid var(--border);
+      vertical-align: top;
     }
 
     th {
@@ -185,7 +216,7 @@
     .controls {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.5rem;
+      gap: 0.45rem;
     }
 
     .filter-btn {
@@ -193,8 +224,9 @@
       color: var(--text);
       border: 1px solid var(--border);
       border-radius: 999px;
-      padding: 0.42rem 0.85rem;
-      font-size: 0.86rem;
+      padding: 0.48rem 0.8rem;
+      min-height: 38px;
+      font-size: 0.84rem;
       cursor: pointer;
     }
 
@@ -207,17 +239,15 @@
 
     .checker-box {
       display: grid;
-      gap: 0.9rem;
+      gap: 0.85rem;
     }
 
     .question-row {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.75rem;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.55rem;
       background: var(--surface-2);
-      padding: 0.85rem 1rem;
+      padding: 0.85rem 0.95rem;
       border-radius: 10px;
       border: 1px solid var(--border);
     }
@@ -229,8 +259,19 @@
       border: 1px solid var(--border);
       background: var(--surface-2);
       color: var(--text);
-      padding: 0.52rem 0.9rem;
+      padding: 0.58rem 0.85rem;
+      min-height: 42px;
       cursor: pointer;
+      max-width: 100%;
+    }
+
+    select {
+      width: 100%;
+    }
+
+    button:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
     }
 
     button.primary {
@@ -246,41 +287,58 @@
     }
 
     .result-banner {
-      padding: 0.95rem 1.1rem;
+      padding: 0.9rem 1rem;
       border-radius: 10px;
       background: #080d1a;
       border-left: 4px solid var(--accent);
+      font-size: 0.94rem;
+      overflow-wrap: anywhere;
     }
 
     .transport {
-      display: flex;
-      flex-wrap: wrap;
+      display: grid;
       gap: 0.75rem;
-      align-items: center;
-      justify-content: space-between;
     }
 
     .btn-row {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.6rem;
+      gap: 0.5rem;
       align-items: center;
+    }
+
+    .btn-row > button {
+      flex: 1 1 auto;
+    }
+
+    .btn-row > select {
+      flex: 1 1 100%;
+    }
+
+    .speed-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-size: 0.88rem;
+      color: var(--muted);
+      min-height: 42px;
+      padding: 0 0.25rem;
     }
 
     .sliders {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-      gap: 1rem;
-      margin-top: 1rem;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr));
+      gap: 0.8rem;
+      margin-top: 0.95rem;
     }
 
     label.slider-box {
       display: grid;
-      gap: 0.35rem;
+      gap: 0.4rem;
       font-size: 0.88rem;
       color: var(--muted);
       background: var(--surface-2);
-      padding: 0.75rem 0.9rem;
+      padding: 0.75rem 0.85rem;
       border-radius: 10px;
       border: 1px solid var(--border);
     }
@@ -288,31 +346,35 @@
     .slider-top {
       display: flex;
       justify-content: space-between;
+      gap: 0.5rem;
       color: var(--text);
       font-weight: 600;
     }
 
     input[type="range"] {
       width: 100%;
+      min-height: 28px;
       accent-color: var(--accent);
       cursor: pointer;
     }
 
     .status {
-      margin-top: 1rem;
+      margin-top: 0.95rem;
       background: #080d1a;
       border: 1px solid var(--border);
       border-radius: 10px;
-      padding: 0.9rem 1rem;
+      padding: 0.85rem 0.95rem;
       display: grid;
-      gap: 0.35rem;
+      gap: 0.4rem;
       font-family: var(--mono);
-      font-size: 0.86rem;
+      font-size: 0.82rem;
+      overflow-wrap: anywhere;
     }
 
     .step-list {
-      max-height: 300px;
+      max-height: 320px;
       overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
       border: 1px solid var(--border);
       border-radius: 10px;
       background: #080d1a;
@@ -320,12 +382,12 @@
 
     .step-item {
       display: flex;
-      justify-content: space-between;
-      gap: 0.75rem;
-      padding: 0.55rem 0.85rem;
+      flex-direction: column;
+      gap: 0.2rem;
+      padding: 0.65rem 0.8rem;
       border-bottom: 1px solid rgba(159, 176, 232, 0.08);
       font-family: var(--mono);
-      font-size: 0.82rem;
+      font-size: 0.8rem;
       color: var(--muted);
     }
 
@@ -335,13 +397,66 @@
       font-weight: 600;
     }
 
+    .step-meta {
+      font-size: 0.76rem;
+      opacity: 0.85;
+    }
+
     .warn {
-      font-size: 0.86rem;
+      font-size: 0.85rem;
       color: #fde68a;
       background: rgba(251, 191, 36, 0.08);
       border: 1px solid rgba(251, 191, 36, 0.25);
-      padding: 0.75rem 0.95rem;
+      padding: 0.75rem 0.9rem;
       border-radius: 10px;
+    }
+
+    @media (min-width: 640px) {
+      .app-shell {
+        padding: 2rem 1.25rem 3.5rem;
+        gap: 1.25rem;
+      }
+
+      .card {
+        padding: 1.35rem;
+      }
+
+      .top-tabs {
+        display: flex;
+        flex-wrap: wrap;
+      }
+
+      .top-tab {
+        flex: 0 1 auto;
+        text-align: left;
+        padding: 0.6rem 1.05rem;
+      }
+
+      .question-row {
+        grid-template-columns: minmax(0, 1fr) minmax(240px, 340px);
+        align-items: center;
+      }
+
+      .transport {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .btn-row > button,
+      .btn-row > select {
+        flex: 0 1 auto;
+        width: auto;
+      }
+
+      .step-item {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: 0.75rem;
+        font-size: 0.82rem;
+      }
     }
   </style>
 </head>
@@ -425,30 +540,31 @@
         <div class="grid-2">
           <div class="subcard">
             <h3>3.1 Pauli Matrices</h3>
-            <pre>σx = ⎡0  1⎤    σy = ⎡0 -i⎤    σz = ⎡1  0⎤
-     ⎣1  0⎦          ⎣i  0⎦          ⎣0 -1⎦</pre>
+            <pre>σx = [0  1; 1  0]
+σy = [0 -i; i  0]
+σz = [1  0; 0 -1]</pre>
             <p><code>det(σx) = -1</code>, <code>det(σy) = 1</code>, <code>det(σz) = -1</code>. Each is self-inverse: <code>σi⁻¹ = σi</code>.</p>
           </div>
           <div class="subcard">
             <h3>3.2 Hadamard Gate</h3>
-            <pre>H = 1/√2 ⎡1  1⎤
-          ⎣1 -1⎦</pre>
+            <pre>H = (1/√2) [ 1  1 ]
+           [ 1 -1 ]</pre>
             <p><code>det(H) = -1</code>. Self-inverse: <code>H⁻¹ = H</code>.</p>
           </div>
           <div class="subcard">
             <h3>3.3 Projector |0⟩⟨0| &amp; Pure Density Matrix</h3>
-            <pre>P = ρ_pure = ⎡1 0⎤
-             ⎣0 0⎦</pre>
+            <pre>P = ρ_pure = [ 1  0 ]
+             [ 0  0 ]</pre>
             <p><code>det = 0</code> → <span class="pill-no">Not invertible</span>.</p>
           </div>
           <div class="subcard">
             <h3>3.4 Mixed-State Density Matrix</h3>
-            <pre>ρ_mixed = 1/2 ⎡1 0⎤
-                ⎣0 1⎦</pre>
+            <pre>ρ_mixed = (1/2) [ 1  0 ]
+                [ 0  1 ]</pre>
             <p><code>det(ρ) = 1/4</code> → <span class="pill-yes">Invertible</span>, with <code>ρ⁻¹ = 2I</code>.</p>
           </div>
         </div>
-        <div class="subcard" style="margin-top: 1rem;">
+        <div class="subcard" style="margin-top: 0.85rem;">
           <h3>4. Green’s Functions (Resolvent)</h3>
           <p style="margin:0;">
             <code>G(z) = (zI - H)⁻¹</code> — Invertible whenever <code>z</code> is not an eigenvalue of <code>H</code> (<code>z ∉ spectrum(H)</code>). Used heavily in perturbation theory and propagators.
@@ -458,7 +574,7 @@
 
       <section class="card qm-card" data-group="reference">
         <h2>5–6. Quick Reference &amp; Quantum Intuition</h2>
-        <div style="overflow-x:auto;">
+        <div class="table-wrap">
           <table>
             <thead>
               <tr>
@@ -562,7 +678,7 @@
           <div class="btn-row">
             <button id="prevBtn" type="button">Prev Step</button>
             <button id="nextBtn" type="button">Next Step</button>
-            <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.88rem;color:var(--muted);">
+            <label class="speed-toggle">
               <input id="timeScale" type="checkbox">
               <span>10× Speed (Test)</span>
             </label>
@@ -670,17 +786,17 @@
         checkerResult.style.borderLeftColor = "var(--no)";
         checkerResult.innerHTML = "❌ <strong>Not Invertible:</strong> Projectors have eigenvalues <code>0</code> or <code>1</code> (<code>det = 0</code>), reflecting irreversible projection/information loss.";
       } else if (type === "hermitian") {
-        subQuestionRow.style.display = "flex";
+        subQuestionRow.style.display = "grid";
         subQuestionLabel.innerHTML = "<strong>2. Are there any zero eigenvalues?</strong>";
         subChoice.innerHTML = '<option value="no">No (all eigenvalues ≠ 0)</option><option value="yes">Yes (at least one zero eigenvalue)</option>';
         renderSubResult();
       } else if (type === "density") {
-        subQuestionRow.style.display = "flex";
+        subQuestionRow.style.display = "grid";
         subQuestionLabel.innerHTML = "<strong>2. Does the density matrix have full rank (mixed state)?</strong>";
         subChoice.innerHTML = '<option value="full">Yes — Full rank (mixed state)</option><option value="rank1">No — Rank-1 (pure state)</option>';
         renderSubResult();
       } else if (type === "resolvent") {
-        subQuestionRow.style.display = "flex";
+        subQuestionRow.style.display = "grid";
         subQuestionLabel.innerHTML = "<strong>2. Is z in the spectrum (eigenvalues) of H?</strong>";
         subChoice.innerHTML = '<option value="outside">No — z ∉ spectrum(H)</option><option value="inside">Yes — z ∈ spectrum(H)</option>';
         renderSubResult();
@@ -837,7 +953,7 @@
         const toneText = s.tones.map(([c, b]) => `${c}+${b}`).join(", ");
         return `<div class="step-item ${idx === stepIndex ? "active" : ""}">
           <span>${idx + 1}. ${s.stage}</span>
-          <span>${toneText} (${s.duration}s)</span>
+          <span class="step-meta">${toneText} (${s.duration}s)</span>
         </div>`;
       }).join("");
     }

@@ -463,10 +463,10 @@
 <body>
   <div class="app-shell">
     <header>
-      <span class="badge">Single-File Application • gateway-sbagen-sequences</span>
+      <span class="badge">Single-File Application • gateway-sbagen-sequences • Exact QM Math</span>
       <h1>QM Matrix Inversion &amp; Gateway SBaGen Lab</h1>
       <p class="subtitle">
-        Combined standalone app featuring the Quantum Mechanics Matrix Inversion roadmap/checker and a real-time Web Audio binaural &amp; pink-noise synthesizer for the Gateway SBaGen sequences.
+        Combined standalone app featuring the exact Quantum Mechanics Matrix Inversion formulation, checker, and a real-time Web Audio binaural &amp; pink-noise synthesizer for the Gateway SBaGen sequences.
       </p>
     </header>
 
@@ -487,11 +487,11 @@
       </nav>
 
       <section class="card qm-card" data-group="foundations">
-        <h2>1. Foundations of Matrix Inversion</h2>
+        <h2>1. Exact Foundations of Matrix &amp; Operator Inversion</h2>
         <ul>
-          <li><strong>Definition:</strong> For a square matrix <code>A</code>, the inverse <code>A⁻¹</code> satisfies <code>A · A⁻¹ = A⁻¹ · A = I</code>.</li>
-          <li><strong>Invertibility condition:</strong> Invertible if and only if <code>det(A) ≠ 0</code>.</li>
-          <li><strong>Relevance in quantum mechanics:</strong> Inversion represents "undoing" the action of an operator.</li>
+          <li><strong>Two-Sided Inverse:</strong> For an <code>n × n</code> operator/matrix <code>A</code> on a Hilbert space <code>ℋ</code>, <code>A⁻¹</code> exists iff <code>A</code> is bijective, satisfying <code>A · A⁻¹ = A⁻¹ · A = I</code>.</li>
+          <li><strong>Exact Invertibility Equivalences (Finite Dim.):</strong> <code>A⁻¹</code> exists <code>⟺ det(A) ≠ 0 ⟺ rank(A) = n ⟺ 0 ∉ σ(A)</code> (where <code>σ(A)</code> is the spectrum/eigenvalue set of <code>A</code>).</li>
+          <li><strong>Adjoint Identities:</strong> With <code>⟨ψ, Aφ⟩ = ⟨A†ψ, φ⟩</code> (<code>A† = (Ā)ᵀ</code>), <code>(AB)† = B†A†</code>, <code>(αA)† = ᾱA†</code>, and <code>(A⁻¹)† = (A†)⁻¹</code> whenever <code>A⁻¹</code> exists.</li>
         </ul>
       </section>
 
@@ -501,130 +501,130 @@
           <div class="subcard">
             <h3>2.1 Unitary Operators</h3>
             <ul>
-              <li><strong>Definition:</strong> <code>U† · U = U · U† = I</code></li>
-              <li><strong>Inverse:</strong> <code>U⁻¹ = U†</code></li>
-              <li><strong>Physical meaning:</strong> Reversible time evolution; conserves probability.</li>
-              <li><strong>Example:</strong> <code>U(t) = e^(-iHt/ħ)</code>, <code>U⁻¹(t) = e^(+iHt/ħ)</code></li>
+              <li><strong>Definition:</strong> <code>U† · U = U · U† = I</code> (inner-product preserving &amp; surjective).</li>
+              <li><strong>Exact Inverse:</strong> <code>U⁻¹ = U†</code> always exists; eigenvalues satisfy <code>|λ| = 1</code> and <code>|det(U)| = 1</code>.</li>
+              <li><strong>Physical meaning:</strong> Reversible unitary evolution; conserves norm and probability.</li>
+              <li><strong>Example:</strong> <code>U(t) = exp(-iHt/ħ)</code>, <code>U⁻¹(t) = U†(t) = exp(+iHt/ħ)</code> (for Hermitian <code>H</code>).</li>
             </ul>
           </div>
           <div class="subcard">
-            <h3>2.2 Hermitian Operators</h3>
+            <h3>2.2 Hermitian (Self-Adjoint) Operators</h3>
             <ul>
-              <li><strong>Definition:</strong> <code>H† = H</code></li>
-              <li><strong>Invertibility:</strong> Invertible iff all eigenvalues <code>≠ 0</code>.</li>
+              <li><strong>Definition:</strong> <code>H† = H</code>; spectral decomposition <code>H = ∑_k λ_k |ψ_k⟩⟨ψ_k|</code> with <code>λ_k ∈ ℝ</code>.</li>
+              <li><strong>Exact Invertibility:</strong> Invertible iff <code>0 ∉ σ(H)</code> (all <code>λ_k ≠ 0</code>), giving <code>H⁻¹ = ∑_k (1/λ_k) |ψ_k⟩⟨ψ_k|</code> (also Hermitian).</li>
               <li><strong>Physical meaning:</strong> Observables (energy, momentum, spin).</li>
-              <li><strong>Examples:</strong> Pauli matrices (invertible); Hamiltonian with zero-energy eigenstates (not invertible).</li>
+              <li><strong>Singular Case:</strong> Any zero eigenvalue <code>λ_k = 0</code> gives <code>det(H) = 0</code> and non-trivial <code>ker(H)</code> → not invertible.</li>
             </ul>
           </div>
           <div class="subcard">
-            <h3>2.3 Projectors</h3>
+            <h3>2.3 Orthogonal Projectors</h3>
             <ul>
-              <li><strong>Definition:</strong> <code>P² = P</code>, <code>P† = P</code></li>
-              <li><strong>Eigenvalues:</strong> <code>0</code> or <code>1</code> → <span class="pill-no">Not invertible</span>.</li>
-              <li><strong>Physical meaning:</strong> Measurement → information loss.</li>
+              <li><strong>Definition:</strong> <code>P² = P</code> and <code>P† = P</code>.</li>
+              <li><strong>Eigenvalues &amp; Invertibility:</strong> <code>λ ∈ {0, 1}</code> → <span class="pill-no">Not invertible</span> for any nontrivial projector (<code>P ≠ I</code> on full space, <code>det(P) = 0</code>).</li>
+              <li><strong>Physical meaning:</strong> Ideal projective measurement/subspace restriction; irreversible information loss on <code>ker(P)</code>.</li>
             </ul>
           </div>
           <div class="subcard">
-            <h3>2.4 Density Matrices</h3>
+            <h3>2.4 Density Matrices / Operators</h3>
             <ul>
-              <li><strong>Definition:</strong> Hermitian, positive semidefinite, <code>Tr(ρ) = 1</code>.</li>
-              <li><strong>Mixed state (full rank):</strong> <span class="pill-yes">Invertible</span>.</li>
-              <li><strong>Pure state (rank-1):</strong> <span class="pill-no">Not invertible</span>.</li>
+              <li><strong>Definition:</strong> <code>ρ† = ρ</code>, <code>ρ ≥ 0</code> (positive semidefinite, all eigenvalues <code>p_j ≥ 0</code>), and <code>Tr(ρ) = 1</code>.</li>
+              <li><strong>Full-Rank Mixed State (<code>p_j &gt; 0</code> ∀j):</strong> <span class="pill-yes">Invertible</span> with <code>ρ⁻¹ = ∑_j (1/p_j) |φ_j⟩⟨φ_j|</code>.</li>
+              <li><strong>Rank-1 Pure State or Any Zero Eigenvalue:</strong> <span class="pill-no">Not invertible</span> (<code>det(ρ) = 0</code>; <code>Tr(ρ²) = 1</code> for pure states).</li>
             </ul>
           </div>
         </div>
       </section>
 
       <section class="card qm-card" data-group="examples">
-        <h2>3–4. Special Cases, Examples &amp; Resolvent</h2>
+        <h2>3–4. Exact Matrix Calculations &amp; Resolvent</h2>
         <div class="grid-2">
           <div class="subcard">
-            <h3>3.1 Pauli Matrices</h3>
-            <pre>σx = [0  1; 1  0]
-σy = [0 -i; i  0]
-σz = [1  0; 0 -1]</pre>
-            <p><code>det(σx) = -1</code>, <code>det(σy) = 1</code>, <code>det(σz) = -1</code>. Each is self-inverse: <code>σi⁻¹ = σi</code>.</p>
+            <h3>3.1 Pauli Matrices (Involutions)</h3>
+            <pre>σx = [0  1; 1  0]   → det(σx) = -1
+σy = [0 -i; i  0]   → det(σy) = -(-i²) = -1
+σz = [1  0; 0 -1]   → det(σz) = -1</pre>
+            <p>Each satisfies <code>σ_i² = I</code> and <code>σ_i† = σ_i</code>, so <code>σ_i⁻¹ = σ_i</code> for <code>i ∈ {x, y, z}</code>.</p>
           </div>
           <div class="subcard">
             <h3>3.2 Hadamard Gate</h3>
-            <pre>H = (1/√2) [ 1  1 ]
-           [ 1 -1 ]</pre>
-            <p><code>det(H) = -1</code>. Self-inverse: <code>H⁻¹ = H</code>.</p>
+            <pre>H_had = (1/√2) [ 1  1 ]
+               [ 1 -1 ]</pre>
+            <p><code>det(H_had) = (1/2)(-1 - 1) = -1 ≠ 0</code>. Unitary and Hermitian with <code>H_had² = I</code>, so <code>H_had⁻¹ = H_had</code>.</p>
           </div>
           <div class="subcard">
-            <h3>3.3 Projector |0⟩⟨0| &amp; Pure Density Matrix</h3>
-            <pre>P = ρ_pure = [ 1  0 ]
-             [ 0  0 ]</pre>
-            <p><code>det = 0</code> → <span class="pill-no">Not invertible</span>.</p>
+            <h3>3.3 Pure Qubit State |0⟩⟨0|</h3>
+            <pre>ρ_pure = |0⟩⟨0| = [ 1  0 ]
+                 [ 0  0 ]</pre>
+            <p><code>det(ρ_pure) = 0</code> (eigenvalues <code>1, 0</code>; rank 1) → <span class="pill-no">Not invertible</span>.</p>
           </div>
           <div class="subcard">
-            <h3>3.4 Mixed-State Density Matrix</h3>
-            <pre>ρ_mixed = (1/2) [ 1  0 ]
-                [ 0  1 ]</pre>
-            <p><code>det(ρ) = 1/4</code> → <span class="pill-yes">Invertible</span>, with <code>ρ⁻¹ = 2I</code>.</p>
+            <h3>3.4 Maximally Mixed Qubit State</h3>
+            <pre>ρ_mixed = (1/2) I₂ = [ 1/2   0  ]
+                     [  0   1/2 ]</pre>
+            <p><code>det(ρ_mixed) = (1/2)(1/2) = 1/4 ≠ 0</code> → <span class="pill-yes">Invertible</span>, with exact inverse <code>ρ_mixed⁻¹ = 2I₂</code>.</p>
           </div>
         </div>
         <div class="subcard" style="margin-top: 0.85rem;">
-          <h3>4. Green’s Functions (Resolvent)</h3>
+          <h3>4. Green’s Function / Resolvent Operator</h3>
           <p style="margin:0;">
-            <code>G(z) = (zI - H)⁻¹</code> — Invertible whenever <code>z</code> is not an eigenvalue of <code>H</code> (<code>z ∉ spectrum(H)</code>). Used heavily in perturbation theory and propagators.
+            <code>R_H(z) = G(z) = (zI - H)⁻¹</code> — Invertible on <code>ℂ \ σ(H)</code> whenever <code>z ∉ σ(H)</code> (for Hermitian <code>H = ∑_n E_n |n⟩⟨n|</code> and <code>z ∉ {E_n}</code>, <code>(zI - H)⁻¹ = ∑_n |n⟩⟨n| / (z - E_n)</code>). Singular whenever <code>z ∈ σ(H)</code> (<code>det(zI - H) = 0</code>).
           </p>
         </div>
       </section>
 
       <section class="card qm-card" data-group="reference">
-        <h2>5–6. Quick Reference &amp; Quantum Intuition</h2>
+        <h2>5–6. Exact Quick Reference &amp; Quantum Intuition</h2>
         <div class="table-wrap">
           <table>
             <thead>
               <tr>
-                <th>Operator Type</th>
+                <th>Operator / Matrix</th>
                 <th>Invertible?</th>
-                <th>Note</th>
+                <th>Exact Condition &amp; Inverse</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td>Unitary</td>
+                <td>General <code>n × n</code> matrix <code>A</code></td>
+                <td class="pill-warn">Iff <code>det(A) ≠ 0</code></td>
+                <td>Equivalent to <code>rank(A) = n</code> and <code>0 ∉ σ(A)</code></td>
+              </tr>
+              <tr>
+                <td>Unitary <code>U</code></td>
                 <td class="pill-yes">Always</td>
-                <td>Inverse = <code>U†</code></td>
+                <td>Exact inverse: <code>U⁻¹ = U†</code>; <code>|λ| = 1</code></td>
               </tr>
               <tr>
-                <td>Hermitian</td>
-                <td class="pill-warn">Sometimes</td>
-                <td>Only if all eigenvalues <code>≠ 0</code></td>
+                <td>Hermitian <code>H</code></td>
+                <td class="pill-warn">Iff <code>0 ∉ σ(H)</code></td>
+                <td><code>H⁻¹ = ∑_k λ_k⁻¹ |ψ_k⟩⟨ψ_k|</code> when all <code>λ_k ≠ 0</code></td>
               </tr>
               <tr>
-                <td>Projectors</td>
-                <td class="pill-no">Never</td>
-                <td>Measurement → information loss</td>
+                <td>Orthogonal projector <code>P</code></td>
+                <td class="pill-no">No (unless <code>P = I</code>)</td>
+                <td>Eigenvalues in <code>{0, 1}</code>; <code>det(P) = 0</code> if <code>ker(P) ≠ {0}</code></td>
               </tr>
               <tr>
-                <td>Density matrices</td>
-                <td class="pill-warn">Sometimes</td>
-                <td>Mixed → yes, Pure → no</td>
+                <td>Density matrix <code>ρ</code> (<code>n × n</code>)</td>
+                <td class="pill-warn">Iff <code>ρ &gt; 0</code> (full rank)</td>
+                <td>All eigenvalues <code>p_j &gt; 0</code>; pure/rank-deficient <code>ρ</code> has <code>det(ρ) = 0</code></td>
               </tr>
               <tr>
-                <td>Pauli matrices</td>
+                <td>Pauli matrices &amp; Hadamard</td>
                 <td class="pill-yes">Always</td>
-                <td>Self-inverse</td>
-              </tr>
-              <tr>
-                <td>Hadamard</td>
-                <td class="pill-yes">Always</td>
-                <td>Self-inverse</td>
+                <td>Involutions (<code>A² = I</code>) with <code>det = -1</code>; <code>A⁻¹ = A</code></td>
               </tr>
               <tr>
                 <td>Resolvent <code>(zI - H)⁻¹</code></td>
-                <td class="pill-yes">If <code>z ∉ spectrum(H)</code></td>
-                <td>Used in perturbation &amp; propagators</td>
+                <td class="pill-yes">Iff <code>z ∉ σ(H)</code></td>
+                <td>Undefined/singular at eigenvalues <code>z ∈ σ(H)</code></td>
               </tr>
             </tbody>
           </table>
         </div>
         <ul style="margin-top:1rem;">
-          <li>Inversion = undoing an operation; time evolution requires unitarity.</li>
-          <li>Measurements collapse states, discarding information so they cannot be inverted.</li>
+          <li>Inversion corresponds to exact operator reversal (<code>A⁻¹A = I</code>); unitary operators are always invertible with <code>U⁻¹ = U†</code>.</li>
+          <li>Non-invertibility (<code>det = 0</code>, zero eigenvalue) means a non-trivial nullspace <code>ker(A) ≠ {0}</code>, where distinct inputs collapse to the same output and cannot be uniquely inverted.</li>
         </ul>
       </section>
 
@@ -750,26 +750,26 @@
       if (type === "hermitian") {
         if (val === "no") {
           checkerResult.style.borderLeftColor = "var(--ok)";
-          checkerResult.innerHTML = "✅ <strong>Invertible:</strong> All eigenvalues are non-zero, so <code>H⁻¹</code> exists.";
+          checkerResult.innerHTML = "✅ <strong>Invertible (0 ∉ σ(H)):</strong> All eigenvalues are non-zero, so <code>H⁻¹ = ∑_k λ_k⁻¹ |ψ_k⟩⟨ψ_k|</code> exists and is Hermitian.";
         } else {
           checkerResult.style.borderLeftColor = "var(--no)";
-          checkerResult.innerHTML = "❌ <strong>Not Invertible:</strong> A zero eigenvalue implies <code>det(H) = 0</code>.";
+          checkerResult.innerHTML = "❌ <strong>Not Invertible (0 ∈ σ(H)):</strong> A zero eigenvalue implies <code>det(H) = 0</code> and <code>ker(H) ≠ {0}</code>.";
         }
       } else if (type === "density") {
         if (val === "full") {
           checkerResult.style.borderLeftColor = "var(--ok)";
-          checkerResult.innerHTML = "✅ <strong>Invertible:</strong> Full-rank mixed states are invertible (e.g., for <code>ρ = ½I</code>, <code>ρ⁻¹ = 2I</code>).";
+          checkerResult.innerHTML = "✅ <strong>Invertible (ρ &gt; 0):</strong> Full-rank positive-definite density matrices (all eigenvalues <code>p_j &gt; 0</code>) have <code>ρ⁻¹ = ∑_j p_j⁻¹ |φ_j⟩⟨φ_j|</code> (e.g., for <code>ρ = ½I₂</code>, <code>ρ⁻¹ = 2I₂</code>).";
         } else {
           checkerResult.style.borderLeftColor = "var(--no)";
-          checkerResult.innerHTML = "❌ <strong>Not Invertible:</strong> Pure-state density matrices are rank-1 projectors (<code>det = 0</code>).";
+          checkerResult.innerHTML = "❌ <strong>Not Invertible (det(ρ) = 0):</strong> Pure states (rank-1) or any state with a zero eigenvalue have <code>det(ρ) = 0</code> and are singular.";
         }
       } else if (type === "resolvent") {
         if (val === "outside") {
           checkerResult.style.borderLeftColor = "var(--ok)";
-          checkerResult.innerHTML = "✅ <strong>Invertible:</strong> <code>G(z) = (zI - H)⁻¹</code> is well-defined when <code>z</code> is not an eigenvalue of <code>H</code>.";
+          checkerResult.innerHTML = "✅ <strong>Invertible (z ∉ σ(H)):</strong> <code>R_H(z) = (zI - H)⁻¹</code> is well-defined when <code>z</code> is not in the spectrum of <code>H</code>.";
         } else {
           checkerResult.style.borderLeftColor = "var(--no)";
-          checkerResult.innerHTML = "❌ <strong>Not Invertible:</strong> If <code>z</code> is an eigenvalue of <code>H</code>, <code>zI - H</code> has a zero eigenvalue and is singular.";
+          checkerResult.innerHTML = "❌ <strong>Not Invertible (z ∈ σ(H)):</strong> When <code>z</code> is an eigenvalue of <code>H</code>, <code>0 ∈ σ(zI - H)</code> and <code>det(zI - H) = 0</code>.";
         }
       }
     }
@@ -781,24 +781,24 @@
 
       if (type === "unitary") {
         checkerResult.style.borderLeftColor = "var(--ok)";
-        checkerResult.innerHTML = "✅ <strong>Always Invertible:</strong> <code>U⁻¹ = U†</code>. Preserves norms and allows reversible evolution.";
+        checkerResult.innerHTML = "✅ <strong>Always Invertible:</strong> <code>U⁻¹ = U†</code> since <code>U†U = UU† = I</code>. Preserves inner products and norms.";
       } else if (type === "projector") {
         checkerResult.style.borderLeftColor = "var(--no)";
-        checkerResult.innerHTML = "❌ <strong>Not Invertible:</strong> Projectors have eigenvalues <code>0</code> or <code>1</code> (<code>det = 0</code>), reflecting irreversible projection/information loss.";
+        checkerResult.innerHTML = "❌ <strong>Not Invertible (for P ≠ I):</strong> Orthogonal projectors satisfy <code>P² = P</code> with eigenvalues in <code>{0, 1}</code>; any zero eigenvalue gives <code>det(P) = 0</code>.";
       } else if (type === "hermitian") {
         subQuestionRow.style.display = "grid";
-        subQuestionLabel.innerHTML = "<strong>2. Are there any zero eigenvalues?</strong>";
-        subChoice.innerHTML = '<option value="no">No (all eigenvalues ≠ 0)</option><option value="yes">Yes (at least one zero eigenvalue)</option>';
+        subQuestionLabel.innerHTML = "<strong>2. Does H have any zero eigenvalues (0 ∈ σ(H))?</strong>";
+        subChoice.innerHTML = '<option value="no">No — 0 ∉ σ(H) (all eigenvalues ≠ 0)</option><option value="yes">Yes — 0 ∈ σ(H) (at least one zero eigenvalue)</option>';
         renderSubResult();
       } else if (type === "density") {
         subQuestionRow.style.display = "grid";
-        subQuestionLabel.innerHTML = "<strong>2. Does the density matrix have full rank (mixed state)?</strong>";
-        subChoice.innerHTML = '<option value="full">Yes — Full rank (mixed state)</option><option value="rank1">No — Rank-1 (pure state)</option>';
+        subQuestionLabel.innerHTML = "<strong>2. Is ρ strictly positive definite (full rank, all eigenvalues p_j &gt; 0)?</strong>";
+        subChoice.innerHTML = '<option value="full">Yes — Full rank, all p_j &gt; 0 (ρ &gt; 0)</option><option value="rank1">No — Pure state (rank-1) or has a zero eigenvalue</option>';
         renderSubResult();
       } else if (type === "resolvent") {
         subQuestionRow.style.display = "grid";
-        subQuestionLabel.innerHTML = "<strong>2. Is z in the spectrum (eigenvalues) of H?</strong>";
-        subChoice.innerHTML = '<option value="outside">No — z ∉ spectrum(H)</option><option value="inside">Yes — z ∈ spectrum(H)</option>';
+        subQuestionLabel.innerHTML = "<strong>2. Is z in the spectrum σ(H) of H?</strong>";
+        subChoice.innerHTML = '<option value="outside">No — z ∉ σ(H)</option><option value="inside">Yes — z ∈ σ(H)</option>';
         renderSubResult();
       }
     }
@@ -1156,3 +1156,4 @@
   </script>
 </body>
 </html>
+```[cite: 1]

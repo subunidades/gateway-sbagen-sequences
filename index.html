@@ -45,11 +45,7 @@
     .hint { margin: 0.7rem 0 0; font-size: 0.8rem; color: var(--muted); }
     @media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
 
-    html, body {
-      margin: 0;
-      padding: 0;
-      overflow-x: clip;
-    }
+    html, body { margin: 0; padding: 0; overflow-x: clip; }
 
     body {
       font-family: var(--sans);
@@ -90,12 +86,7 @@
       overflow-wrap: anywhere;
     }
 
-    .subtitle {
-      margin: 0;
-      color: var(--muted);
-      font-size: 0.95rem;
-      max-width: 72ch;
-    }
+    .subtitle { margin: 0; color: var(--muted); font-size: 0.95rem; max-width: 72ch; }
 
     .top-tabs {
       display: grid;
@@ -118,26 +109,15 @@
       transition: all 0.15s ease;
       text-align: center;
     }
-
-    .top-tab:hover {
-      border-color: var(--accent);
-    }
-
+    .top-tab:hover { border-color: var(--accent); }
     .top-tab.active {
       background: linear-gradient(135deg, var(--accent), var(--accent-2));
       color: var(--on-accent);
       border-color: transparent;
     }
 
-    .view {
-      display: none;
-      gap: 1.1rem;
-      min-width: 0;
-    }
-
-    .view.active {
-      display: grid;
-    }
+    .view { display: none; gap: 1.1rem; min-width: 0; }
+    .view.active { display: grid; }
 
     .card {
       background: var(--card);
@@ -146,36 +126,13 @@
       padding: 1.1rem;
       min-width: 0;
     }
+    .card.hidden { display: none; }
 
-    .card.hidden {
-      display: none;
-    }
-
-    h2 {
-      margin: 0 0 0.8rem;
-      font-size: 1.18rem;
-      color: var(--accent);
-      line-height: 1.3;
-    }
-
-    h3 {
-      margin: 0 0 0.45rem;
-      font-size: 1rem;
-      line-height: 1.35;
-    }
-
-    ul {
-      margin: 0.35rem 0 0;
-      padding-left: 1.15rem;
-    }
-
-    li + li {
-      margin-top: 0.35rem;
-    }
-
-    code {
-      overflow-wrap: anywhere;
-    }
+    h2 { margin: 0 0 0.8rem; font-size: 1.18rem; color: var(--accent); line-height: 1.3; }
+    h3 { margin: 0 0 0.45rem; font-size: 1rem; line-height: 1.35; }
+    ul { margin: 0.35rem 0 0; padding-left: 1.15rem; }
+    li + li { margin-top: 0.35rem; }
+    code { overflow-wrap: anywhere; }
 
     .grid-2 {
       display: grid;
@@ -205,40 +162,17 @@
       color: var(--text);
     }
 
-    .table-wrap {
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      border-radius: 10px;
-    }
+    .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 10px; }
 
-    table {
-      width: 100%;
-      min-width: 440px;
-      border-collapse: collapse;
-      font-size: 0.88rem;
-    }
-
-    th, td {
-      text-align: left;
-      padding: 0.62rem 0.65rem;
-      border-bottom: 1px solid var(--border);
-      vertical-align: top;
-    }
-
-    th {
-      color: var(--muted);
-      font-weight: 600;
-    }
+    table { width: 100%; min-width: 440px; border-collapse: collapse; font-size: 0.88rem; }
+    th, td { text-align: left; padding: 0.62rem 0.65rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    th { color: var(--muted); font-weight: 600; }
 
     .pill-yes { color: var(--ok); font-weight: 600; }
     .pill-warn { color: var(--warn); font-weight: 600; }
     .pill-no { color: var(--no); font-weight: 600; }
 
-    .controls {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.45rem;
-    }
+    .controls { display: flex; flex-wrap: wrap; gap: 0.45rem; }
 
     .filter-btn {
       background: var(--surface);
@@ -250,7 +184,6 @@
       font-size: 0.84rem;
       cursor: pointer;
     }
-
     .filter-btn.active {
       background: linear-gradient(135deg, var(--accent), var(--accent-2));
       color: var(--on-accent);
@@ -258,10 +191,7 @@
       border-color: transparent;
     }
 
-    .checker-box {
-      display: grid;
-      gap: 0.85rem;
-    }
+    .checker-box { display: grid; gap: 0.85rem; }
 
     .question-row {
       display: grid;
@@ -285,27 +215,15 @@
       cursor: pointer;
       max-width: 100%;
     }
-
-    select {
-      width: 100%;
-    }
-
-    button:disabled {
-      opacity: 0.45;
-      cursor: not-allowed;
-    }
-
+    select { width: 100%; }
+    button:disabled { opacity: 0.45; cursor: not-allowed; }
     button.primary {
       background: linear-gradient(135deg, var(--accent), var(--accent-2));
       color: var(--on-accent);
       font-weight: 700;
       border: none;
     }
-
-    button.stop {
-      border-color: rgba(248, 113, 113, 0.45);
-      color: var(--stop-text);
-    }
+    button.stop { border-color: rgba(248, 113, 113, 0.45); color: var(--stop-text); }
 
     .result-banner {
       padding: 0.9rem 1rem;
@@ -316,25 +234,10 @@
       overflow-wrap: anywhere;
     }
 
-    .transport {
-      display: grid;
-      gap: 0.75rem;
-    }
-
-    .btn-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      align-items: center;
-    }
-
-    .btn-row > button {
-      flex: 1 1 auto;
-    }
-
-    .btn-row > select {
-      flex: 1 1 100%;
-    }
+    .transport { display: grid; gap: 0.75rem; }
+    .btn-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+    .btn-row > button { flex: 1 1 auto; }
+    .btn-row > select { flex: 1 1 100%; }
 
     .speed-toggle {
       display: inline-flex;
@@ -363,21 +266,8 @@
       border-radius: 10px;
       border: 1px solid var(--border);
     }
-
-    .slider-top {
-      display: flex;
-      justify-content: space-between;
-      gap: 0.5rem;
-      color: var(--text);
-      font-weight: 600;
-    }
-
-    input[type="range"] {
-      width: 100%;
-      min-height: 28px;
-      accent-color: var(--accent);
-      cursor: pointer;
-    }
+    .slider-top { display: flex; justify-content: space-between; gap: 0.5rem; color: var(--text); font-weight: 600; }
+    input[type="range"] { width: 100%; min-height: 28px; accent-color: var(--accent); cursor: pointer; }
 
     .status {
       margin-top: 0.95rem;
@@ -400,7 +290,6 @@
       border-radius: 10px;
       background: var(--deep);
     }
-
     .step-item {
       display: flex;
       flex-direction: column;
@@ -411,17 +300,8 @@
       font-size: 0.8rem;
       color: var(--muted);
     }
-
-    .step-item.active {
-      background: rgba(56, 189, 248, 0.14);
-      color: var(--text);
-      font-weight: 600;
-    }
-
-    .step-meta {
-      font-size: 0.76rem;
-      opacity: 0.85;
-    }
+    .step-item.active { background: rgba(56, 189, 248, 0.14); color: var(--text); font-weight: 600; }
+    .step-meta { font-size: 0.76rem; opacity: 0.85; }
 
     .warn {
       font-size: 0.85rem;
@@ -433,44 +313,13 @@
     }
 
     @media (min-width: 640px) {
-      .app-shell {
-        padding: 2rem 1.25rem 3.5rem;
-        gap: 1.25rem;
-      }
-
-      .card {
-        padding: 1.35rem;
-      }
-
-      .top-tabs {
-        display: flex;
-        flex-wrap: wrap;
-      }
-
-      .top-tab {
-        flex: 0 1 auto;
-        text-align: left;
-        padding: 0.6rem 1.05rem;
-      }
-
-      .question-row {
-        grid-template-columns: minmax(0, 1fr) minmax(240px, 340px);
-        align-items: center;
-      }
-
-      .transport {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        justify-content: space-between;
-      }
-
-      .btn-row > button,
-      .btn-row > select {
-        flex: 0 1 auto;
-        width: auto;
-      }
-
+      .app-shell { padding: 2rem 1.25rem 3.5rem; gap: 1.25rem; }
+      .card { padding: 1.35rem; }
+      .top-tabs { display: flex; flex-wrap: wrap; }
+      .top-tab { flex: 0 1 auto; text-align: left; padding: 0.6rem 1.05rem; }
+      .question-row { grid-template-columns: minmax(0, 1fr) minmax(240px, 340px); align-items: center; }
+      .transport { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; }
+      .btn-row > button, .btn-row > select { flex: 0 1 auto; width: auto; }
       .step-item {
         flex-direction: row;
         justify-content: space-between;
@@ -513,6 +362,7 @@
           <li><strong>Definition:</strong> For a square matrix <code>A</code>, the inverse <code>A⁻¹</code> satisfies <code>A · A⁻¹ = A⁻¹ · A = I</code>.</li>
           <li><strong>Invertibility condition:</strong> Invertible if and only if <code>det(A) ≠ 0</code>.</li>
           <li><strong>Relevance in quantum mechanics:</strong> Inversion represents "undoing" the action of an operator.</li>
+          <li><strong>Scope:</strong> These criteria assume finite dimensions. For unbounded operators in infinite dimensions, a bounded inverse exists only if <code>0</code> is not in the spectrum.</li>
         </ul>
       </section>
 
@@ -541,7 +391,7 @@
             <h3>2.3 Projectors</h3>
             <ul>
               <li><strong>Definition:</strong> <code>P² = P</code>, <code>P† = P</code></li>
-              <li><strong>Eigenvalues:</strong> <code>0</code> or <code>1</code> → <span class="pill-no">Not invertible</span>.</li>
+              <li><strong>Eigenvalues:</strong> <code>0</code> or <code>1</code> → <span class="pill-no">Not invertible</span> unless <code>P = I</code>.</li>
               <li><strong>Physical meaning:</strong> Measurement → information loss.</li>
             </ul>
           </div>
@@ -550,7 +400,7 @@
             <ul>
               <li><strong>Definition:</strong> Hermitian, positive semidefinite, <code>Tr(ρ) = 1</code>.</li>
               <li><strong>Mixed state (full rank):</strong> <span class="pill-yes">Invertible</span>.</li>
-              <li><strong>Pure state (rank-1):</strong> <span class="pill-no">Not invertible</span>.</li>
+              <li><strong>Pure state (rank-1) or any rank-deficient state:</strong> <span class="pill-no">Not invertible</span>.</li>
             </ul>
           </div>
         </div>
@@ -564,7 +414,7 @@
             <pre>σx = [0  1; 1  0]
 σy = [0 -i; i  0]
 σz = [1  0; 0 -1]</pre>
-            <p><code>det(σx) = -1</code>, <code>det(σy) = 1</code>, <code>det(σz) = -1</code>. Each is self-inverse: <code>σi⁻¹ = σi</code>.</p>
+            <p><code>det(σx) = -1</code>, <code>det(σy) = -1</code>, <code>det(σz) = -1</code>. Each is self-inverse: <code>σi⁻¹ = σi</code>.</p>
           </div>
           <div class="subcard">
             <h3>3.2 Hadamard Gate</h3>
@@ -617,13 +467,13 @@
               </tr>
               <tr>
                 <td>Projectors</td>
-                <td class="pill-no">Never</td>
-                <td>Measurement → information loss</td>
+                <td class="pill-no">Never (unless P = I)</td>
+                <td>Nontrivial projectors discard information</td>
               </tr>
               <tr>
                 <td>Density matrices</td>
                 <td class="pill-warn">Sometimes</td>
-                <td>Mixed → yes, Pure → no</td>
+                <td>Full rank → yes; rank-deficient (incl. pure) → no</td>
               </tr>
               <tr>
                 <td>Pauli matrices</td>
@@ -689,7 +539,7 @@
           <div class="btn-row">
             <select id="presetSelect" aria-label="Choose sequence">
               <option value="mini">gateway-mini.sbg (~30 min, 450s/step)</option>
-              <option value="cycle">gateway-cycle.sbg (~2 hr, 600s/step)</option>
+              <option value="cycle">gateway-cycle.sbg (~90 min, 600s/step)</option>
             </select>
             <button id="playBtn" class="primary" type="button">Play</button>
             <button id="pauseBtn" type="button" disabled>Pause</button>
@@ -787,7 +637,7 @@
           checkerResult.innerHTML = "✅ <strong>Invertible:</strong> Full-rank mixed states are invertible (e.g., for <code>ρ = ½I</code>, <code>ρ⁻¹ = 2I</code>).";
         } else {
           checkerResult.style.borderLeftColor = "var(--no)";
-          checkerResult.innerHTML = "❌ <strong>Not Invertible:</strong> Pure-state density matrices are rank-1 projectors (<code>det = 0</code>).";
+          checkerResult.innerHTML = "❌ <strong>Not Invertible:</strong> A rank-deficient density matrix has a zero eigenvalue (<code>det = 0</code>). Pure states are the extreme case: rank-1 projectors.";
         }
       } else if (type === "resolvent") {
         if (val === "outside") {
@@ -810,7 +660,7 @@
         checkerResult.innerHTML = "✅ <strong>Always Invertible:</strong> <code>U⁻¹ = U†</code>. Preserves norms and allows reversible evolution.";
       } else if (type === "projector") {
         checkerResult.style.borderLeftColor = "var(--no)";
-        checkerResult.innerHTML = "❌ <strong>Not Invertible:</strong> Projectors have eigenvalues <code>0</code> or <code>1</code> (<code>det = 0</code>), reflecting irreversible projection/information loss.";
+        checkerResult.innerHTML = "❌ <strong>Not Invertible (unless P = I):</strong> Any nontrivial projector has eigenvalue <code>0</code> (<code>det = 0</code>), reflecting irreversible projection/information loss.";
       } else if (type === "hermitian") {
         subQuestionRow.style.display = "grid";
         subQuestionLabel.innerHTML = "<strong>2. Are there any zero eigenvalues?</strong>";
@@ -818,8 +668,8 @@
         renderSubResult();
       } else if (type === "density") {
         subQuestionRow.style.display = "grid";
-        subQuestionLabel.innerHTML = "<strong>2. Does the density matrix have full rank (mixed state)?</strong>";
-        subChoice.innerHTML = '<option value="full">Yes — Full rank (mixed state)</option><option value="rank1">No — Rank-1 (pure state)</option>';
+        subQuestionLabel.innerHTML = "<strong>2. Does the density matrix have full rank?</strong>";
+        subChoice.innerHTML = '<option value="full">Yes — Full rank (all eigenvalues &gt; 0)</option><option value="rank1">No — Rank-deficient (includes all pure states)</option>';
         renderSubResult();
       } else if (type === "resolvent") {
         subQuestionRow.style.display = "grid";
@@ -859,6 +709,7 @@
 
     const PINK_HEADROOM = 0.25;
     const FADE_SEC = 0.06;
+    const TICK_MS = 250;
 
     let ctx = null;
     let masterNode = null;
@@ -873,7 +724,7 @@
     let isPlaying = false;
     let isPaused = false;
     let lastTick = null;
-    let rafId = null;
+    let timerId = null;
     let transportOpId = 0;
 
     function formatTime(sec) {
@@ -917,8 +768,9 @@
         toneBus.gain.value = Number($("toneGain").value);
         toneBus.connect(masterNode);
 
+        // FIX: pink noise starts silent; gatePink() opens it only while playing
         pinkBus = ctx.createGain();
-        pinkBus.gain.value = Number($("pinkGain").value) * PINK_HEADROOM;
+        pinkBus.gain.value = 0;
         pinkBus.connect(masterNode);
 
         pinkSource = ctx.createBufferSource();
@@ -929,6 +781,21 @@
       }
       if (ctx.state === "suspended") {
         await ctx.resume();
+      }
+    }
+
+    function gatePink(on) {
+      if (!ctx || !pinkBus) return;
+      const v = on ? Number($("pinkGain").value) * PINK_HEADROOM : 0;
+      pinkBus.gain.setTargetAtTime(v, ctx.currentTime, 0.05);
+    }
+
+    function holdGain(param, now) {
+      if (param.cancelAndHoldAtTime) {
+        param.cancelAndHoldAtTime(now);
+      } else {
+        param.cancelScheduledValues(now);
+        param.setValueAtTime(Math.max(0.0001, param.value), now);
       }
     }
 
@@ -979,6 +846,7 @@
     function applyStepVoices(step) {
       clearVoices(false);
       if (!ctx || !toneBus || !step) return;
+      gatePink(true); // only called when sound should be audible
 
       const perVoiceGain = Math.min(0.22, 0.45 / Math.max(1, step.tones.length));
       const now = ctx.currentTime;
@@ -1049,12 +917,17 @@
       $("overallLabel").textContent = `${formatTime(done)} / ${formatTime(total)}`;
     }
 
-    function holdGain(param, now) {
-      if (param.cancelAndHoldAtTime) {
-        param.cancelAndHoldAtTime(now);
-      } else {
-        param.cancelScheduledValues(now);
-        param.setValueAtTime(Math.max(0.0001, param.value), now);
+    // FIX: timer uses setTimeout + performance.now() deltas (not requestAnimationFrame,
+    // which is suspended in background tabs while the audio keeps playing).
+    function scheduleTick() {
+      if (timerId) clearTimeout(timerId);
+      timerId = setTimeout(() => tick(performance.now()), TICK_MS);
+    }
+
+    function cancelTick() {
+      if (timerId) {
+        clearTimeout(timerId);
+        timerId = null;
       }
     }
 
@@ -1096,7 +969,7 @@
         }
       }
       lastTick = now;
-      rafId = requestAnimationFrame(tick);
+      scheduleTick();
     }
 
     async function startOrResume() {
@@ -1110,14 +983,12 @@
         isPaused = false;
         applyStepVoices(step);
         lastTick = performance.now();
-        if (rafId) cancelAnimationFrame(rafId);
-        rafId = requestAnimationFrame(tick);
+        scheduleTick();
       } else if (isPaused) {
         isPaused = false;
         applyStepVoices(step);
         lastTick = performance.now();
-        if (rafId) cancelAnimationFrame(rafId);
-        rafId = requestAnimationFrame(tick);
+        scheduleTick();
       }
       updateUI();
     }
@@ -1127,6 +998,7 @@
       const opId = ++transportOpId;
       if (!isPaused) {
         isPaused = true;
+        gatePink(false);
         lastTick = null;
         clearVoices(false);
         updateUI();
@@ -1146,11 +1018,9 @@
       isPaused = false;
       elapsedInStep = 0;
       lastTick = null;
-      if (rafId) {
-        cancelAnimationFrame(rafId);
-        rafId = null;
-      }
-      clearVoices(true);
+      cancelTick();
+      clearVoices(false); // FIX: faded stop avoids a click
+      gatePink(false);    // FIX: silence the looping pink noise
       updateUI();
     }
 
@@ -1193,7 +1063,8 @@
     $("pinkGain").addEventListener("input", (e) => {
       const v = Number(e.target.value);
       $("pinkVal").textContent = `${Math.round(v * 100)}%`;
-      if (pinkBus && ctx) pinkBus.gain.setTargetAtTime(v * PINK_HEADROOM, ctx.currentTime, 0.025);
+      // FIX: don't un-mute noise while stopped or paused
+      if (pinkBus && ctx && isPlaying && !isPaused) pinkBus.gain.setTargetAtTime(v * PINK_HEADROOM, ctx.currentTime, 0.025);
     });
 
     document.addEventListener("keydown", (e) => {
